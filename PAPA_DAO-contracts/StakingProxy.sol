@@ -1,7 +1,3 @@
-/**
- *Submitted for verification at FtmScan.com on 2022-01-04
-*/
-
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity ^0.7.5;
 
@@ -299,18 +295,9 @@ library SafeERC20 {
     }
 }
 
-
-interface ISPAPA {
-    function gonsForBalance( uint amount ) external view returns ( uint );
-    function balanceForGons( uint gons ) external view returns ( uint );
-}
-
-interface IStakingProxy {
+interface IStaking {
     function stake( uint _amount, address _recipient ) external returns ( bool );
     function claim( address _recipient ) external;
-}
-
-interface IStaking{
     function epoch() external view returns (
         uint length,
         uint number,
@@ -318,94 +305,80 @@ interface IStaking{
         uint distribute);
 }
 
-contract StakingManager is Ownable {
+interface IsPAPA {
+    function gonsForBalance( uint amount ) external view returns ( uint );
+    function balanceForGons( uint gons ) external view returns ( uint );
+}
+
+interface IStakingManager{
+    function warmupPeriod() external view returns (uint);
+}
+
+contract StakingProxy is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;
 
     address public immutable PAPA;
+    address public immutable sPAPA;
+    address public immutable manager;
     address public immutable staking;
-    
-    uint public epoch = 0;
+    uint public lastStakedEpoch;
 
-    uint public warmupPeriod = 0;
-    address[] public proxies;
+    struct Claim {
+        uint deposit;
+        uint gons;
+        uint expiry;
+    }
+    mapping(address => Claim) public claims;
     
     constructor(
-        address _papa,
+        address _papa, // PAPA Token contract address
+        address _spapa, // sPAPA Token contract address
+        address _manager, // Staking Manager contract address 
         address _staking
     ) {
         require(_papa != address(0));
-        PAPA = _papa;
+        require(_spapa != address(0));
+        require(_manager != address(0));
         require(_staking != address(0));
+
+        PAPA = _papa;
+        sPAPA = _spapa;
+        manager = _manager;
         staking = _staking;
     }
     
-    function addProxy(address _proxy) external onlyPolicy() {
-        require(_proxy != address(0));
-
-        for(uint i=0;i<proxies.length;i++) {
-            if(proxies[i] == _proxy) {
-                return;
-            }
-        }
-        
-        proxies.push(_proxy);
-    }
-    
-    function removeProxy(address _proxy) external onlyPolicy() returns (bool) {
-        require(_proxy != address(0));
-       
-        for(uint i=0;i<proxies.length;i++) {
-            if(proxies[i] == _proxy) {
-                require(proxies.length-1 >= warmupPeriod, "Not enough proxies to support specified period.");
-                for(uint j=i;j<proxies.length-1;j++) {
-                    proxies[j] = proxies[j+1];
-                }
-
-                proxies.pop();
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    function setWarmupPeriod(uint period) external onlyPolicy() {
-        require(proxies.length >= period, "Not enough proxies to support specified period.");
-        
-        warmupPeriod = period;
-    }
-    
     function stake(uint _amount, address _recipient) external returns (bool) {
-        require(proxies.length > 0, "No proxies defined.");
+        require(msg.sender == manager); // only allow calls from the StakingManager
         require(_recipient != address(0));
         require(_amount != 0); // why would anyone need to stake 0 PAPA?
-        uint stakingEpoch=getStakingEpoch();
-        if ( epoch < stakingEpoch) {
-            epoch = stakingEpoch; // set next epoch block
+        lastStakedEpoch=getStakingEpoch();
+        Claim memory claimInfo = claims[_recipient];
+        claims[_recipient] = Claim({
+            deposit: claimInfo.deposit.add(_amount),
+            gons: claimInfo.gons.add(IsPAPA(sPAPA).gonsForBalance(_amount)),
+            expiry: lastStakedEpoch.add( IStakingManager(staking).warmupPeriod() )
+        });
 
-            claim(_recipient); // claim any expired warmups before rolling to the next epoch
-        }
-        
-        address targetProxy = proxies[warmupPeriod == 0 ? 0 : epoch % warmupPeriod];
-        require(targetProxy != address(0));
-        
-        IERC20(PAPA).safeTransferFrom(msg.sender, targetProxy, _amount);
-
-        return IStakingProxy(targetProxy).stake(_amount, _recipient);
+        IERC20(PAPA).approve(staking, _amount);
+        return IStaking(staking).stake(_amount, address(this));
     }
-
-    function claim(address _recipient) public {
-        require(proxies.length > 0, "No proxies defined.");
+    
+    function claim(address _recipient) external {
+        require(msg.sender == manager); // only allow calls from the StakingManager
         require(_recipient != address(0));
 
-        for(uint i=0;i<proxies.length;i++) {
-            require(proxies[i] != address(0));
-            
-            IStakingProxy(proxies[i]).claim(_recipient);
+        if(getStakingEpoch()>=lastStakedEpoch+IStakingManager(staking).warmupPeriod()){
+            IStaking(staking).claim(address(this));
         }
+        Claim memory claimInfo = claims[ _recipient ];
+        if(claimInfo.gons == 0||claimInfo.expiry>getStakingEpoch()) {
+            return;
+        }
+        
+        delete claims[_recipient];
+        IERC20(sPAPA).transfer(_recipient, IsPAPA(sPAPA).balanceForGons(claimInfo.gons));
     }
-
     function getStakingEpoch() view public returns(uint stakingEpoch){
         (,stakingEpoch,,)=IStaking(staking).epoch();
     }

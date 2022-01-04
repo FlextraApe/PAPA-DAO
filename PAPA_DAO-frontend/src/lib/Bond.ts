@@ -35,8 +35,11 @@ interface BondOpts {
   bondToken: string; // Unused, but native token to buy the bond.
   isFour?: Boolean;
   isTotal?: Boolean;
+  isOld?: Boolean;
   decimals?: number;
   fourAddress?: string;
+  additionValue?: number;
+  substractionValue?: number;
 }
 
 // Technically only exporting for the interface
@@ -51,8 +54,11 @@ export abstract class Bond {
   readonly bondToken: string;
   readonly isFour?: Boolean;
   readonly isTotal?: Boolean;
+  readonly isOld?: Boolean;
   readonly decimals?: number;
   readonly fourAddress?: string;
+  readonly additionValue?: number;
+  readonly substractionValue?: number;
 
   // The following two fields will differ on how they are set depending on bond type
   abstract isLP: Boolean;
@@ -72,8 +78,11 @@ export abstract class Bond {
     this.bondToken = bondOpts.bondToken;
     this.isFour = bondOpts.isFour;
     this.isTotal = bondOpts.isTotal;
+    this.isOld = bondOpts.isOld;
     this.decimals = bondOpts.decimals;
     this.fourAddress = bondOpts.fourAddress;
+    this.additionValue = bondOpts.additionValue;
+    this.substractionValue = bondOpts.substractionValue;
   }
 
   getAddressForBond(networkID: NetworkID) {
@@ -124,15 +133,18 @@ export class LPBond extends Bond {
     const token = this.getContractForReserve(networkID, provider);
     const tokenAddress = this.getAddressForReserve(networkID);
     let bondCalculator;
-    if (this.name == "hec_usdc_lp") {
-      bondCalculator = getBondCalculator(networkID, provider);
-    } else {
-      bondCalculator = getBondCalculator(networkID, provider);
-    }
+    bondCalculator = getBondCalculator(networkID, provider);
+
     let tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
     if (this.isTotal) {
       let bond = this.getContractForBond(networkID, provider);
       tokenAmount = await bond.totalPrinciple();
+    }
+    if (this.substractionValue) {
+      tokenAmount = tokenAmount.sub(BigInt(this.substractionValue));
+    }
+    if (this.additionValue) {
+      tokenAmount = tokenAmount.add(BigInt(this.additionValue));
     }
     if (this.fourAddress) {
       const fourBond = new ethers.Contract(this.fourAddress, MimBondContract, provider);
@@ -141,12 +153,9 @@ export class LPBond extends Bond {
     }
     const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
     const markdown = await bondCalculator.markdown(tokenAddress);
+
     let tokenUSD;
-    if (this.name == "hec_usdc_lp") {
-      tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 6));
-    } else {
-      tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-    }
+    tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
     return tokenUSD;
   }
 }
@@ -184,6 +193,9 @@ export class StableBond extends Bond {
     if (this.fourAddress) {
       const fourBond = new ethers.Contract(this.fourAddress, MimBondContract, provider);
       treasuryBalane -= (await fourBond.totalPrinciple()) / Math.pow(10, decimals);
+    }
+    if (this.additionValue) {
+      treasuryBalane += this.additionValue / Math.pow(10, decimals);
     }
     return treasuryBalane;
   }

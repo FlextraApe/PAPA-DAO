@@ -20,7 +20,9 @@ import { abi as DaiBondContract } from "src/abi/bonds/DaiContract.json";
 import { abi as UsdtBondContract } from "src/abi/bonds/Usdt.json";
 import { abi as MimBondContract } from "src/abi/bonds/MimContract.json";
 import { abi as MimBondContract4 } from "src/abi/bonds/MimBondContract_4.json";
+import { abi as MimBondContract4V2 } from "src/abi/bonds/Mim4V2Contract.json";
 import { abi as PapaMimBondContract4 } from "src/abi/bonds/PapaMimBondContract_4.json";
+import { abi as PapaMimBondContract4V2 } from "src/abi/bonds/PapaMim4V2Contract.json";
 import { abi as ReserveHecDaiContract } from "src/abi/reserves/HecDai.json";
 import { abi as ReserveHecUsdcContract } from "src/abi/reserves/HecUsdc.json";
 import { getBondCalculator } from "src/helpers/BondCalculator";
@@ -37,6 +39,8 @@ export const mim = new StableBond({
   bondToken: "MIM",
   bondIconSvg: MimImg,
   bondContractABI: DaiBondContract,
+  fourAddress: "0xe416939731c5d308CBA5B6FA0C4A32A9d2f125B4",
+  additionValue: -1150261659697897638102474,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x654d5796B2C70D24eD7402e87D8a72BddF87ccca",
@@ -103,6 +107,8 @@ export const papa_mim = new LPBond({
   bondIconSvg: PAPAMimimg,
   bondContractABI: BondHecDaiContract,
   reserveContract: ReserveHecDaiContract,
+  fourAddress: "0x72B6623055Cf0205A652773F8d2d6aA00229a030",
+  substractionValue: 3626460866383219298,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x35B912024f639757bE4f1A11e4420412af34E661",
@@ -161,10 +167,32 @@ export const mim4 = new StableBond({
   bondIconSvg: MimImg,
   isFour: true,
   isTotal: true,
+  isOld: true,
   bondContractABI: MimBondContract4,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0xb5e4a9002b060d29D6752297e4ffd335bab34ba3",
+      reserveAddress: "0x130966628846bfd36ff31a822705796e8cb8c18d",
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: "0xDea5668E815dAF058e3ecB30F645b04ad26374Cf",
+      reserveAddress: "0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C",
+    },
+  },
+});
+
+export const mim4_v2 = new StableBond({
+  name: "mim4_v2",
+  displayName: "MIM",
+  bondToken: "MIM",
+  bondIconSvg: MimImg,
+  isFour: true,
+  isTotal: true,
+  bondContractABI: MimBondContract4V2,
+  additionValue: 1150261659697897638102474,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: "0xe416939731c5d308CBA5B6FA0C4A32A9d2f125B4",
       reserveAddress: "0x130966628846bfd36ff31a822705796e8cb8c18d",
     },
     [NetworkID.Testnet]: {
@@ -183,9 +211,34 @@ export const papa_mim_4 = new LPBond({
   isTotal: true,
   bondContractABI: PapaMimBondContract4,
   reserveContract: ReserveHecDaiContract,
+  isOld: true,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x04B0dB0bD9BaB2E5854ff5Cca0A30D0C56459B9b",
+      reserveAddress: "0xA03a99CD3d553fE9EbBcCecAbcB8c47100482F72",
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: "0xcF449dA417cC36009a1C6FbA78918c31594B9377",
+      reserveAddress: "0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2",
+    },
+  },
+  lpUrl:
+    "https://traderjoexyz.com/#/pool/0x70b33ebC5544C12691d055b49762D0F8365d99Fe/0x130966628846BFd36ff31a822705796e8cb8C18D",
+});
+
+export const papa_mim_4_v2 = new LPBond({
+  name: "papa_mim_lp4_v2",
+  displayName: "PAPA-MIM LP",
+  bondToken: "MIM",
+  bondIconSvg: PAPAMimimg,
+  isFour: true,
+  isTotal: true,
+  bondContractABI: PapaMimBondContract4V2,
+  reserveContract: ReserveHecDaiContract,
+  additionValue: 3626460866383219298,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: "0x72B6623055Cf0205A652773F8d2d6aA00229a030",
       reserveAddress: "0xA03a99CD3d553fE9EbBcCecAbcB8c47100482F72",
     },
     [NetworkID.Testnet]: {
@@ -201,7 +254,7 @@ export const papa_mim_4 = new LPBond({
 // Is it a stableCoin bond? use `new StableBond`
 // Is it an LP Bond? use `new LPBond`
 // Add new bonds to this array!!
-export const allBonds = [papa_mim, mim, usdt, avax, papa_wavax, mim4, papa_mim_4];
+export const allBonds = [papa_mim, mim, usdt, avax, papa_wavax, mim4_v2, papa_mim_4_v2];
 export const allBondsMap = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});

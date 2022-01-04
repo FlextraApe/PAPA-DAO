@@ -5,16 +5,16 @@ import { redeemBond } from "../../slices/BondSlice";
 import { info, error } from "../../slices/MessagesSlice";
 import BondLogo from "../../components/BondLogo";
 import { Box, Button, Link, Paper, Typography, TableRow, TableCell, SvgIcon, Slide } from "@material-ui/core";
-import { ReactComponent as ArrowUp } from "../../assets/icons/arrow-up.svg";
-import { NavLink } from "react-router-dom";
 import "./choosebond.scss";
 import { Skeleton } from "@material-ui/lab";
 import { useWeb3Context, useBonds } from "src/hooks";
 import { isPendingTxn, txnButtonTextGeneralPending } from "src/slices/PendingTxnsSlice";
+import { mim4 } from "src/helpers/AllBonds";
 
 export function ClaimBondTableData({ userBond }) {
   const dispatch = useDispatch();
   let { bonds } = useBonds();
+  bonds = bonds.concat([mim4]);
   const { address, chainID, provider } = useWeb3Context();
 
   const bond = userBond[1];
@@ -49,7 +49,6 @@ export function ClaimBondTableData({ userBond }) {
       await dispatch(redeemBond({ address, bond: currentBond, networkID: chainID, provider, autostake }));
     }
   }
- console.log("claimable", displayName, bond.pendingPayout)
   return (
     <TableRow id={`${bondName}--claim`}>
       <TableCell align="left" className="bond-name-cell">
@@ -58,6 +57,11 @@ export function ClaimBondTableData({ userBond }) {
           <Typography variant="body1" style={{ fontSize: "16px" }}>
             {displayName ? trim(displayName, 4) : <Skeleton width={100} />}
           </Typography>
+          {bond.isOld && (
+            <Typography variant="body1" style={{ fontSize: "10px", textAlign: "right" }}>
+              (OLD)
+            </Typography>
+          )}
         </div>
       </TableCell>
       <TableCell align="center">
@@ -87,6 +91,7 @@ export function ClaimBondTableData({ userBond }) {
 export function ClaimBondCardData({ userBond }) {
   const dispatch = useDispatch();
   let { bonds } = useBonds();
+  bonds = bonds.concat([mim4]);
   const { address, chainID, provider } = useWeb3Context();
 
   const bond = userBond[1];
@@ -128,6 +133,11 @@ export function ClaimBondCardData({ userBond }) {
         <BondLogo bond={bond} />
         <Box className="bond-name">
           <Typography>{bond.displayName ? trim(displayName, 4) : <Skeleton width={100} />}</Typography>
+          {bond.isOld && (
+            <Typography variant="body1" style={{ fontSize: "10px", textAlign: "left" }}>
+              (OLD)
+            </Typography>
+          )}
         </Box>
       </Box>
 
@@ -157,15 +167,17 @@ export function ClaimBondCardData({ userBond }) {
             {txnButtonTextGeneralPending(pendingTransactions, "redeem_bond_" + bondName, "Claim")}
           </Typography>
         </Button>
-        {!bond.isFour && <Button variant="outlined" color="primary" onClick={() => onRedeem({ autostake: true })}>
-          <Typography variant="h5">
-            {txnButtonTextGeneralPending(
-              pendingTransactions,
-              "redeem_bond_" + bondName + "_autostake",
-              "Claim and Stake",
+        {!bond.isFour && (
+          <Button variant="outlined" color="primary" onClick={() => onRedeem({ autostake: true })}>
+            <Typography variant="h5">
+              {txnButtonTextGeneralPending(
+                pendingTransactions,
+                "redeem_bond_" + bondName + "_autostake",
+                "Claim and Stake",
             )}
           </Typography>
-        </Button>}
+          </Button>
+        )}
       </Box>
     </Box>
   );

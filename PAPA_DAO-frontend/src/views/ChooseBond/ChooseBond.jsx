@@ -46,17 +46,18 @@ function ChooseBond() {
     return state.app.marketPrice;
   });
 
-  const treasuryBalance = useSelector(state => {
-    if (state.bonding.loading == false) {
-      let tokenBalances = 0;
-      for (const bond in allBondsMap) {
-        if (state.bonding[bond]) {
-          tokenBalances += state.bonding[bond].purchased;
+  const treasuryBalance =
+    useSelector(state => {
+      if (state.bonding.loading == false) {
+        let tokenBalances = 0;
+        for (const bond in allBondsMap) {
+          if (state.bonding[bond] && !allBondsMap[bond].isOld) {
+            tokenBalances += state.bonding[bond].purchased;
+          }
         }
+        return tokenBalances;
       }
-      return tokenBalances;
-    }
-  });
+    }) ?? 0;
 
   return (
     <>
@@ -116,7 +117,7 @@ function ChooseBond() {
                     </TableHead>
                     <TableBody>
                       {bonds
-                        .filter(bond => bond.isFour)
+                        .filter(bond => bond.isFour && !bond.isOld)
                         .map(bond => (
                           <BondTableData key={bond.name} bond={bond} />
                         ))}
@@ -132,7 +133,7 @@ function ChooseBond() {
           <Box className="hec-card-container">
             <Grid container item spacing={2}>
               {bonds
-                .filter(bond => bond.isFour)
+                .filter(bond => bond.isFour && !bond.isOld)
                 .map(bond => (
                   <Grid item xs={12} key={bond.name}>
                     <BondDataCard key={bond.name} bond={bond} />
@@ -165,7 +166,7 @@ function ChooseBond() {
                     </TableHead>
                     <TableBody>
                       {bonds
-                        .filter(bond => !bond.isFour)
+                        .filter(bond => !bond.isFour && !bond.isOld)
                         .map(bond => (
                           <BondTableData key={bond.name} bond={bond} />
                         ))}
@@ -181,7 +182,7 @@ function ChooseBond() {
           <Box className="hec-card-container">
             <Grid container item spacing={2}>
               {bonds
-                .filter(bond => !bond.isFour)
+                .filter(bond => !bond.isFour && !bond.isOld)
                 .map(bond => (
                   <Grid item xs={12} key={bond.name}>
                     <BondDataCard key={bond.name} bond={bond} />

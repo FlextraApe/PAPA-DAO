@@ -118,7 +118,6 @@ export function BondTableData({ bond }) {
   const stakingRebasePercentage = stakingRebase * 1200;
   let discount = bond.bondDiscount * 100;
   if (bond.isFour) {
-    // displayName += " (4, 4)";
     isFour = true;
     discount += stakingRebasePercentage;
   }
