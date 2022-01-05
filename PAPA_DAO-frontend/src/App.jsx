@@ -89,7 +89,7 @@ function App() {
   const isAppLoading = useSelector(state => state.app.loading);
   const isAppLoaded = useSelector(state => typeof state.app.marketPrice != "undefined"); // Hacky way of determining if we were able to load app Details.
   let { bonds } = useBonds();
-  bonds = [...bonds, ...[mim4]];
+  bonds = [...bonds, ...[mim4, papa_mim]];
   // bonds = bonds.concat(papa_mim);
   async function loadDetails(whichDetails) {
     // NOTE (unbanksy): If you encounter the following error:

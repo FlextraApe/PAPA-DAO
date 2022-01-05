@@ -9,12 +9,12 @@ import "./choosebond.scss";
 import { Skeleton } from "@material-ui/lab";
 import { useWeb3Context, useBonds } from "src/hooks";
 import { isPendingTxn, txnButtonTextGeneralPending } from "src/slices/PendingTxnsSlice";
-import { mim4 } from "src/helpers/AllBonds";
+import { mim4, papa_mim_4 } from "src/helpers/AllBonds";
 
 export function ClaimBondTableData({ userBond }) {
   const dispatch = useDispatch();
   let { bonds } = useBonds();
-  bonds = bonds.concat([mim4]);
+  bonds = bonds.concat([mim4, papa_mim_4]);
   const { address, chainID, provider } = useWeb3Context();
 
   const bond = userBond[1];
@@ -91,7 +91,7 @@ export function ClaimBondTableData({ userBond }) {
 export function ClaimBondCardData({ userBond }) {
   const dispatch = useDispatch();
   let { bonds } = useBonds();
-  bonds = bonds.concat([mim4]);
+  bonds = bonds.concat([mim4, papa_mim_4]);
   const { address, chainID, provider } = useWeb3Context();
 
   const bond = userBond[1];
