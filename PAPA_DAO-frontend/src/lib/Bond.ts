@@ -4,7 +4,7 @@ import { abi as MimBondContract } from "src/abi/bonds/MimContract.json";
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
 import { getBondCalculator, getBondCalculator1 } from "src/helpers/BondCalculator";
 import { addresses } from "src/constants";
-import React, { ReactNode } from "react";
+import React from "react";
 
 export enum NetworkID {
   Mainnet = 43114,

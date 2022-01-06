@@ -59,7 +59,6 @@ function Bond({ bond }) {
                 onSlippageChange={onSlippageChange}
                 onRecipientAddressChange={onRecipientAddressChange}
               />
-
               <Box direction="row" className="bond-price-data-row">
                 <div className="bond-price-data">
                   <Typography variant="h5" color="textSecondary">
@@ -78,7 +77,6 @@ function Bond({ bond }) {
                   </Typography>
                 </div>
               </Box>
-
               <Tabs
                 centered
                 value={view}
@@ -90,11 +88,9 @@ function Bond({ bond }) {
                 <Tab label="Bond" {...a11yProps(0)} />
                 <Tab label="Redeem" {...a11yProps(1)} />
               </Tabs>
-
               <TabPanel value={view} index={0}>
                 <BondPurchase bond={bond} slippage={slippage} recipientAddress={recipientAddress} />
               </TabPanel>
-
               <TabPanel value={view} index={1}>
                 <BondRedeem bond={bond} />
               </TabPanel>
