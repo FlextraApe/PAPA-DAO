@@ -32,15 +32,15 @@ export const loadAppDetails = createAsyncThunk(
     }
     protocolMetrics(first: 1, orderBy: timestamp, orderDirection: desc) {
       timestamp
-      hecCirculatingSupply
-      sHecCirculatingSupply
+      papaCirculatingSupply
+      sPapaCirculatingSupply
       totalSupply
-      hecPrice
+      papaPrice
       marketCap
       totalValueLocked
       treasuryMarketValue
       nextEpochRebase
-      nextDistributedHec
+      nextDistributedPapa
     }
   }
   `;
@@ -74,17 +74,15 @@ export const loadAppDetails = createAsyncThunk(
     }
     const sHecMainContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sHECv2, provider);
     const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
-    const hecBalance = await hecContract.balanceOf(addresses[networkID].STAKING_ADDRESS);
-    const oldhecBalance = await hecContract.balanceOf(addresses[networkID].OLD_STAKING_ADDRESS);
     const oldsHecContract = new ethers.Contract(
       addresses[networkID].OLD_SPAPA_ADDRESS as string,
       [circulatingSupply],
       provider,
     );
     const old_circ = await oldsHecContract.circulatingSupply();
-    const stakingTVL = ((hecBalance.toNumber() + oldhecBalance.toNumber())* marketPrice) / 1000000000;
+    const stakingTVL = parseFloat(graphData.data.protocolMetrics[0].totalValueLocked);
     const circ = await sHecMainContract.circulatingSupply();
-    const circSupply = circ / 1000000000 + old_circ / 1000000000;
+    const circSupply = parseFloat(graphData.data.protocolMetrics[0].papaCirculatingSupply);
     const total = await hecContract.totalSupply();
     const totalSupply = total / 1000000000;
     const marketCap = marketPrice * circSupply;
@@ -101,21 +99,20 @@ export const loadAppDetails = createAsyncThunk(
       };
     }
     const currentBlock = await provider.getBlockNumber();
-
     // Calculating staking
     const epoch = await stakingContract.epoch();
     const old_epoch = await old_stakingContract.epoch();
     const stakingReward = epoch.distribute;
-    const stakingRebase = stakingReward / circ;
     const old_stakingReward = old_epoch.distribute;
+    const stakingRebase = stakingReward / circ;
     const old_stakingRebase = old_stakingReward / old_circ;
     const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
     const old_fiveDayRate = Math.pow(1 + old_stakingRebase, 5 * 3) - 1;
     const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
-    const epochNumber = epoch.number;
     // Current index
-    const currentIndex = (await stakingContract.index()).toNumber() + 66333368;
+    const currentIndex = await stakingContract.index();
     const endBlock = epoch.endBlock;
+    const epochNumber = epoch.number;
 
     return {
       currentIndex: ethers.utils.formatUnits(currentIndex, "gwei"),
@@ -186,7 +183,7 @@ const loadMarketPrice = createAsyncThunk("app/loadMarketPrice", async ({ network
     marketPrice = await getMarketPrice({ networkID, provider });
     marketPrice = marketPrice / Math.pow(10, 9);
   } catch (e) {
-    marketPrice = await getTokenPrice("hector");
+    marketPrice = await getTokenPrice("papa");
   }
   return { marketPrice };
 });

@@ -30,7 +30,7 @@ type ProtocolMetric @entity {
   treasuryWAVAXMarketValue: BigDecimal!
   treasuryMIMMarketValue: BigDecimal!
   currentAPY: BigDecimal!
-  runwayCurrent: BigDecimal
+  runwayCurrent: BigDecimal!
   treasuryPapaMimPOL: BigDecimal!
   treasuryPapaAvaxPOL: BigDecimal!
 }

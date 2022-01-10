@@ -21,10 +21,10 @@ import { allBondsMap } from "src/helpers/AllBonds";
 import { useWeb3Context } from "src/hooks";
 
 function TreasuryDashboard() {
-  // const [data, setData] = useState(null);
-  // const [apy, setApy] = useState([]);
-  // const [runway, setRunway] = useState(null);
-  // const [staked, setStaked] = useState(null);
+  const [data, setData] = useState(null);
+  const [apy, setApy] = useState([]);
+  const [runway, setRunway] = useState(null);
+  const [staked, setStaked] = useState(null);
   const theme = useTheme();
   const smallerScreen = useMediaQuery("(max-width: 650px)");
   const verySmallScreen = useMediaQuery("(max-width: 379px)");
@@ -63,45 +63,40 @@ function TreasuryDashboard() {
     return state.app.marketPrice * state.app.currentIndex;
   });
 
-  // const { chainID, provider } = useWeb3Context();
-  // const [runway, setRunway] = useState(0);
+  useEffect(() => {
+    apollo(treasuryDataQuery).then(r => {
+      let metrics = r?.data?.protocolMetrics.map(entry =>
+        Object.entries(entry).reduce((obj, [key, value]) => ((obj[key] = parseFloat(value)), obj), {}),
+      );
+      let staked = r?.data?.protocolMetrics.map(entry => ({
+        staked: (parseFloat(entry.sPapaCirculatingSupply) / parseFloat(entry.papaCirculatingSupply)) * 100,
+        timestamp: entry.timestamp,
+      }));
 
-  // useEffect(async() => {
-  //     const result = await calcRunway(circSupply, { networkID: chainID, provider });
-  //     console.log(result);
-  //     setRunway(result);
-  // }, [])
+      if (staked) {
+        staked = staked.filter(pm => pm.staked < 100);
+        setStaked(staked);
+      }
 
-  // useEffect(() => {
-  //   apollo(treasuryDataQuery).then(r => {
-  //     let metrics = r.data.protocolMetrics.map(entry =>
-  //       Object.entries(entry).reduce((obj, [key, value]) => ((obj[key] = parseFloat(value)), obj), {}),
-  //     );
-  //     metrics = metrics.filter(pm => pm.treasuryMarketValue > 0);
-  //     setData(metrics);
+      if (metrics) {
+        metrics = metrics.filter(pm => pm.treasuryMarketValue > 0);
+        setData(metrics);
+        const runway = metrics.filter(pm => pm.runwayCurrent > 5);
+        setRunway(runway);
+      }
+    });
 
-  //     let staked = r.data.protocolMetrics.map(entry => ({
-  //       staked: (parseFloat(entry.sHecCirculatingSupply) / parseFloat(entry.hecCirculatingSupply)) * 100,
-  //       timestamp: entry.timestamp,
-  //     }));
-  //     staked = staked.filter(pm => pm.staked < 100);
-  //     setStaked(staked);
-
-  //     let runway = metrics.filter(pm => pm.runwayCurrent > 5);
-  //     setRunway(runway);
-  //   });
-
-  //   apollo(rebasesV1DataQuery).then(r => {
-  //     let apy = r.data.rebases.map(entry => ({
-  //       apy: Math.pow(parseFloat(entry.percentage) + 1, 365 * 3) * 100,
-  //       timestamp: entry.timestamp - (entry.timestamp % (3600 * 4)),
-  //     }));
-
-  //     apy = apy.filter(pm => pm.apy < 5000000);
-
-  //     setApy(apy);
-  //   });
-  // }, []);
+    apollo(rebasesV1DataQuery).then(r => {
+      let apy = r?.data?.rebases.map(entry => ({
+        apy: Math.pow(parseFloat(entry.percentage) + 1, 365 * 3) * 100,
+        timestamp: entry.timestamp - (entry.timestamp % (3600 * 4)),
+      }));
+      if (apy) {
+        apy = apy.filter(pm => pm.apy < 5000000);
+        setApy(apy);
+      }
+    });
+  }, []);
 
   return (
     <div id="treasury-dashboard-view" className={`${smallerScreen && "smaller"} ${verySmallScreen && "very-small"}`}>
@@ -188,7 +183,7 @@ function TreasuryDashboard() {
           </Paper>
         </Box>
 
-        {/* <Zoom in={true}>
+        <Zoom in={true}>
           <Grid container spacing={2} className="data-grid">
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Paper className="hec-card hec-chart-card">
@@ -214,16 +209,17 @@ function TreasuryDashboard() {
                   type="stack"
                   data={data}
                   dataKey={[
-                    "treasuryDaiMarketValue",
-                    "treasuryUsdcMarketValue",
                     "treasuryMIMMarketValue",
-                    "treasuryWFTMMarketValue",
+                    "treasuryUsdtMarketValue",
+                    "treasuryWAVAXMarketValue",
                   ]}
                   stopColor={[
                     ["#F5AC37", "#EA9276"],
                     ["#768299", "#98B3E9"],
-                    ["#DC30EB", "#EA98F1"],
-                    ["#8BFF4D", "#4C8C2A"],
+                    ["#8351ff", "#b151ff"],
+                    ["#c6c6c6", "#545454"],
+                    ["#ffffff", "#d5d5d5"],
+                    ["#22d5e7", "#18919d"],
                   ]}
                   headerText="Market Value of Treasury Assets"
                   headerSubText={`${data && formatCurrency(data[0].treasuryMarketValue)}`}
@@ -242,13 +238,18 @@ function TreasuryDashboard() {
                   type="stack"
                   data={data}
                   format="currency"
-                  dataKey={["treasuryDaiRiskFreeValue", "treasuryUsdcRiskFreeValue", "treasuryMIMRiskFreeValue"]}
+                  dataKey={[
+                    "treasuryMIMRiskFreeValue",
+                    "treasuryUsdtRiskFreeValue",
+                    "treasuryWAVAXRiskFreeValue",
+                  ]}
                   stopColor={[
                     ["#F5AC37", "#EA9276"],
                     ["#768299", "#98B3E9"],
-                    ["#ff758f", "#c9184a"],
-                    ["#000", "#fff"],
-                    ["#000", "#fff"],
+                    ["#8351ff", "#b151ff"],
+                    ["#c6c6c6", "#545454"],
+                    ["#ffffff", "#d5d5d5"],
+                    ["#22d5e7", "#18919d"],
                   ]}
                   headerText="Risk Free Value of Treasury Assets"
                   headerSubText={`${data && formatCurrency(data[0].treasuryRiskFreeValue)}`}
@@ -266,10 +267,10 @@ function TreasuryDashboard() {
                 <Chart
                   type="area"
                   data={data}
-                  dataKey={["treasuryHecDaiPOL"]}
+                  dataKey={["treasuryPapaMimPOL"]}
                   stopColor={[["rgba(128, 204, 131, 1)", "rgba(128, 204, 131, 0)"]]}
-                  headerText="Protocol Owned Liquidity HEC-DAI"
-                  headerSubText={`${data && trim(data[0].treasuryHecDaiPOL, 2)}% `}
+                  headerText="Protocol Owned Liquidity PAPA-MIM"
+                  headerSubText={`${data && trim(data[0].treasuryPapaMimPOL, 2)}% `}
                   dataFormat="percent"
                   bulletpointColors={bulletpoints.pol}
                   itemNames={tooltipItems.pol}
@@ -288,7 +289,7 @@ function TreasuryDashboard() {
                   data={staked}
                   dataKey={["staked"]}
                   stopColor={[["#55EBC7", "#47ACEB"]]}
-                  headerText="HEC Staked"
+                  headerText="PAPA Staked"
                   dataFormat="percent"
                   headerSubText={`${staked && trim(staked[0].staked, 2)}% `}
                   isStaked={true}
@@ -319,7 +320,7 @@ function TreasuryDashboard() {
               </Paper>
             </Grid>
           </Grid>
-        </Zoom> */}
+        </Zoom>
       </Container>
     </div>
   );

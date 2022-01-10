@@ -6,34 +6,34 @@ query {
   protocolMetrics(first: 1000, orderBy: timestamp, orderDirection: desc) {
     id
     timestamp
-    hecCirculatingSupply
-    sHecCirculatingSupply
+    papaCirculatingSupply
+    sPapaCirculatingSupply
     totalSupply
-    hecPrice
+    papaPrice
     marketCap
     totalValueLocked
     treasuryRiskFreeValue
     treasuryMarketValue
+    treasuryInvestments
     nextEpochRebase
-    nextDistributedHec
-    treasuryDaiMarketValue
-    treasuryDaiRiskFreeValue
-    treasuryUsdcMarketValue
-    treasuryUsdcRiskFreeValue
-    treasuryWFTMMarketValue
+    nextDistributedPapa
+    treasuryUsdtRiskFreeValue
+    treasuryWAVAXRiskFreeValue
     treasuryMIMRiskFreeValue
+    treasuryUsdtMarketValue
+    treasuryWAVAXMarketValue
     treasuryMIMMarketValue
     currentAPY
     runwayCurrent
-    treasuryHecDaiPOL
-    treasuryHecUsdcPOL
+    treasuryPapaMimPOL
+    treasuryPapaAvaxPOL
   }
 }
 `;
 
 export const rebasesV1DataQuery = `
 query {
-  rebases(where: {contract: "0x9ae7972BA46933B3B20aaE7Acbf6C311847aCA40"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
+  rebases(where: {contract: "0xde698Aa043F4A9548AAc041434473E9e53991430"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
     percentage
     timestamp
   }
@@ -42,7 +42,7 @@ query {
 
 export const rebasesV2DataQuery = `
 query {
-  rebases(where: {contract: "0xD12930C8deeDafD788F437879cbA1Ad1E3908Cc5"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
+  rebases(where: {contract: "0x3875AC1F19E05813000F02414b3141DC3Ff991B6"}, orderBy: timestamp, first: 1000, orderDirection: desc) {
     percentage
     timestamp
   }
@@ -143,20 +143,20 @@ export const bulletpoints = {
 
 export const tooltipItems = {
   tvl: ["Total Value Deposited"],
-  coin: ["DAI", "USDC", "MiM", "WFTM"],
+  coin: ["MIM", "USDT", "WAVAX"],
   apy: ["APY"],
   runway: ["Days"],
   pol: ["SLP Treasury", "Market SLP"],
 };
 
 export const tooltipInfoMessages = {
-  tvl: "Total Value Deposited, is the dollar amount of all HEC staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
+  tvl: "Total Value Deposited, is the dollar amount of all PAPA staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
   mvt: "Market Value of Treasury Assets, is the sum of the value (in dollars) of all assets held by the treasury.",
-  rfv: "Risk Free Value, is the amount of funds the treasury guarantees to use for backing HEC.",
+  rfv: "Risk Free Value, is the amount of funds the treasury guarantees to use for backing PAPA.",
   pol: "Protocol Owned Liquidity, is the amount of LP the treasury owns and controls. The more POL the better for the protocol and its users.",
-  staked: "HEC Staked, is the ratio of sHEC to HEC (staked vs unstaked)",
+  staked: "PAPA Staked, is the ratio of sPAPA to PAPA (staked vs unstaked)",
   apy: "Annual Percentage Yield, is the normalized representation of an interest rate, based on a compounding period over one year. Note that APYs provided are rather ballpark level indicators and not so much precise future results.",
-  runway: "Runway, is the number of days sHEC emissions can be sustained at a given rate. Lower APY = longer runway",
+  runway: "Runway, is the number of days sPAPA emissions can be sustained at a given rate. Lower APY = longer runway",
 };
 
 export const itemType = {
