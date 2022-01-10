@@ -19,7 +19,6 @@ import apollo from "../../lib/apolloClient";
 import InfoTooltip from "src/components/InfoTooltip/InfoTooltip.jsx";
 import { allBondsMap } from "src/helpers/AllBonds";
 import { useWeb3Context } from "src/hooks";
-import {calcRunway} from "src/helpers/Runway";
 
 function TreasuryDashboard() {
   // const [data, setData] = useState(null);
