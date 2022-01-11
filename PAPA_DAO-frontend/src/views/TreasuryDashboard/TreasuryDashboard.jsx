@@ -82,7 +82,7 @@ function TreasuryDashboard() {
       if (metrics) {
         metrics = metrics.filter(pm => pm.treasuryMarketValue > 0);
         setData(metrics);
-        const runway = metrics.filter(pm => pm.runwayCurrent > 5);
+        const runway = metrics.filter(pm => (pm.runwayCurrent > 5 && pm.runwayCurrent < 2000));
         setRunway(runway);
       }
     });
