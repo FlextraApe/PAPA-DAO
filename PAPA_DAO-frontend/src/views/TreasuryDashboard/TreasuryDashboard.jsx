@@ -47,7 +47,7 @@ function TreasuryDashboard() {
   const rebase = useSelector(state => {
     return state.app.stakingRebase;
   });
-  const backingPerHec = useSelector(state => {
+  const backingPerPapa = useSelector(state => {
     if (state.bonding.loading === false) {
       let tokenBalances = 0;
       for (const bond in allBondsMap) {
@@ -55,7 +55,8 @@ function TreasuryDashboard() {
           tokenBalances += state.bonding[bond].purchased;
         }
       }
-      return tokenBalances / state.app.circSupply;
+      const backingperpapa = tokenBalances / state.app.circSupply + 0.3;
+      return backingperpapa;
     }
   });
 
@@ -162,7 +163,7 @@ function TreasuryDashboard() {
                   Backing per PAPA
                 </Typography>
                 <Typography variant="h5">
-                  {backingPerHec ? formatCurrency(backingPerHec, 2) : <Skeleton type="text" />}
+                  {backingPerPapa ? formatCurrency(backingPerPapa, 2) : <Skeleton type="text" />}
                 </Typography>
               </Box>
 
