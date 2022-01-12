@@ -18,7 +18,6 @@ import "./treasury-dashboard.scss";
 import apollo from "../../lib/apolloClient";
 import InfoTooltip from "src/components/InfoTooltip/InfoTooltip.jsx";
 import { allBondsMap } from "src/helpers/AllBonds";
-import { useWeb3Context } from "src/hooks";
 
 function TreasuryDashboard() {
   const [data, setData] = useState(null);
