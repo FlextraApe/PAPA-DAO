@@ -5,21 +5,25 @@ import { ReactComponent as InfoIcon } from "../../assets/icons/info-fill.svg";
 import { ReactComponent as ArrowUpIcon } from "../../assets/icons/arrow-up.svg";
 import { ReactComponent as spapaTokenImg } from "../../assets/tokens/SPAPA.svg";
 import { ReactComponent as papaTokenImg } from "../../assets/tokens/PAPA.svg";
+import { ReactComponent as wspapaTokenImg } from "../../assets/tokens/PAPA.svg";
 
 import "./hecmenu.scss";
 import { useWeb3Context } from "../../hooks/web3Context";
 
 import PAPAImg from "src/assets/tokens/PAPA.png";
 import sPAPAImg from "src/assets/tokens/SPAPA.png";
+import wsPAPAImg from "src/assets/tokens/SPAPA.png";
+
 const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   if (window.ethereum) {
     const host = window.location.origin;
     // NOTE (appleseed): 33T token defaults to sHEC logo since we don't have a 33T logo yet
     let tokenPath, decimals;
-    // if (tokenSymbol === "HEC") {
-
-    // } ? PAPAImg : sPAPAImg;
     switch (tokenSymbol) {
+      case "wsPAPA":
+        tokenPath = wsPAPAImg;
+        decimals = 18;
+        break;
       case "PAPA":
         tokenPath = PAPAImg;
         decimals = 9;
@@ -57,7 +61,7 @@ function HecMenu() {
 
   const SPAPA_ADDRESS = addresses[networkID].SPAPA_ADDRESS;
   const PAPA_ADDRESS = addresses[networkID].PAPA_ADDRESS;
-  const USDC_ADDRESS = addresses[networkID].USDC_ADDRESS;
+  const WSPAPA_ADDRESS = addresses[networkID].WSPAPA_ADDRESS;
 
   const handleClick = event => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -95,17 +99,11 @@ function HecMenu() {
                     </Button>
                   </Link>
 
-                  {/* <Link
-                    href={`https://swap.spiritswap.finance/#/add/${USDC_ADDRESS}/${PAPA_ADDRESS}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <Link component={NavLink} to="/wrap" style={{ textDecoration: "none" }}>
                     <Button size="large" variant="contained" color="secondary" fullWidth>
-                      <Typography align="left">
-                        Buy on SpiritSwap <SvgIcon component={ArrowUpIcon} htmlColor="#A3A3A3" />
-                      </Typography>
+                      <Typography align="left">Wrap sPAPA</Typography>
                     </Button>
-                  </Link> */}
+                  </Link>
                 </Box>
 
                 {isEthereumAPIAvailable ? (
@@ -128,6 +126,14 @@ function HecMenu() {
                           style={{ height: "25px", width: "25px" }}
                         />
                         <Typography variant="body1">sPAPA</Typography>
+                      </Button>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("wsHPAPA", WSPAPA_ADDRESS)}>
+                        <SvgIcon
+                          component={wspapaTokenImg}
+                          viewBox="0 0 100 100"
+                          style={{ height: "25px", width: "25px" }}
+                        />
+                        <Typography variant="body1">wsPAPA</Typography>
                       </Button>
                     </Box>
                   </Box>
