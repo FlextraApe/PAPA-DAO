@@ -8,8 +8,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import useTheme from "./hooks/useTheme";
 import useBonds from "./hooks/Bonds";
 import { useAddress, useWeb3Context } from "./hooks/web3Context";
-import useSegmentAnalytics from "./hooks/useSegmentAnalytics";
-import { segmentUA, providerChecker } from "./helpers/userAnalyticHelpers";
 import { storeQueryParameters } from "./helpers/QueryParameterHelper";
 import { shouldTriggerSafetyCheck } from "./helpers";
 
@@ -22,15 +20,14 @@ import { Stake, ChooseBond, Bond, TreasuryDashboard } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
-import LoadingSplash from "./components/Loading/LoadingSplash";
 import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
 
 import { dark as darkTheme } from "./themes/dark.js";
 import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
-import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
+import Wrap from "./views/Wrap/Wrap";
 import { mim4, papa_mim_4 } from "./helpers/AllBonds";
 import Calculator from "./views/Calculator/index";
 
@@ -238,6 +235,10 @@ function App() {
 
             <Route path="/stake">
               <Stake />
+            </Route>
+
+            <Route path="/wrap">
+              <Wrap />
             </Route>
 
             <Route path="/bonds">
