@@ -6,6 +6,7 @@ import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as GlobeIcon } from "../../assets/icons/globe.svg";
 import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
+import { ReactComponent as WrapIcon } from "../../assets/icons/wrap.svg";
 import { ReactComponent as PAPAIcon } from "../../assets/icons/papa-nav-header.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
@@ -90,6 +91,21 @@ function NavContent() {
                 <Typography variant="h6">
                   <SvgIcon color="primary" component={StakeIcon} />
                   Stake
+                </Typography>
+              </Link>
+
+              <Link
+                component={NavLink}
+                id="wrap-nav"
+                to="/wrap"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "wrap");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={WrapIcon} />
+                  Wrap
                 </Typography>
               </Link>
 

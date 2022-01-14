@@ -119,7 +119,7 @@ export const changeWrap = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const wshecContract = new ethers.Contract(addresses[networkID].WSHEC_ADDRESS as string, wsPAPA, signer);
+    const wshecContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, signer);
 
     let wrapTx;
     let uaData: IUAData = {

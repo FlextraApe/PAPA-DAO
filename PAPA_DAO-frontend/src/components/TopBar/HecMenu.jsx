@@ -13,6 +13,7 @@ import { useWeb3Context } from "../../hooks/web3Context";
 import PAPAImg from "src/assets/tokens/PAPA.png";
 import sPAPAImg from "src/assets/tokens/SPAPA.png";
 import wsPAPAImg from "src/assets/tokens/SPAPA.png";
+import { NavLink } from "react-router-dom";
 
 const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   if (window.ethereum) {

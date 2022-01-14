@@ -66,7 +66,7 @@ function Wrap() {
     return state.account.balances && state.account.balances.shec;
   });
   const wsHecBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.wshec;
+    return state.account.balances && state.account.balances.wspapa;
   });
   const wrapAllowance = useSelector(state => {
     return state.account.wrapping && state.account.wrapping.hecWrap;
@@ -103,14 +103,14 @@ function Wrap() {
       action === "wrap" &&
       ethers.utils.parseUnits(quantity, "gwei").gt(ethers.utils.parseUnits(sHecBalance, "gwei"))
     ) {
-      return dispatch(error("You cannot wrap more than your sHEC balance."));
+      return dispatch(error("You cannot wrap more than your sPAPA balance."));
     }
 
     if (
       action === "unwrap" &&
       ethers.utils.parseUnits(quantity, "ether").gt(ethers.utils.parseUnits(wsHecBalance, "ether"))
     ) {
-      return dispatch(error("You cannot unwrap more than your wsHEC balance."));
+      return dispatch(error("You cannot unwrap more than your wsPAPA balance."));
     }
 
     await dispatch(changeWrap({ address, action, value: quantity.toString(), provider, networkID: chainID }));
@@ -157,7 +157,7 @@ function Wrap() {
                   aria-label="wsHec-wut"
                   target="_blank"
                 > */}
-                <Typography>wsHEC</Typography>
+                <Typography>wsPAPA</Typography>
                 {/* <SvgIcon component={InfoIcon} color="primary" /> */}
                 {/* </Link> */}
               </div>
@@ -169,7 +169,7 @@ function Wrap() {
                   <Grid item xs={12} sm={4} md={4} lg={4}>
                     <div className="wrap-sHEC">
                       <Typography variant="h5" color="textSecondary">
-                        sHEC Price
+                        sPAPA Price
                       </Typography>
                       <Typography variant="h4">
                         {sHECPrice ? formatCurrency(sHECPrice, 2) : <Skeleton width="150px" />}
@@ -182,17 +182,17 @@ function Wrap() {
                         Current Index
                       </Typography>
                       <Typography variant="h4">
-                        {currentIndex ? <>{trim(currentIndex, 2)} HEC</> : <Skeleton width="150px" />}
+                        {currentIndex ? <>{trim(currentIndex, 2)} PAPA</> : <Skeleton width="150px" />}
                       </Typography>
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={4} md={4} lg={4}>
                     <div className="wrap-wsHEC">
                       <Typography variant="h5" color="textSecondary">
-                        wsHEC Price
+                        wsPAPA Price
                         <InfoTooltip
                           message={
-                            "wsHEC = sHEC * index\n\nThe price of wsHEC is equal to the price of HEC multiplied by the current index"
+                            "wsPAPA = sPAPA * index\n\nThe price of wsPAPA is equal to the price of PAPA multiplied by the current index"
                           }
                         />
                       </Typography>
@@ -211,7 +211,7 @@ function Wrap() {
                   <div className="wallet-menu" id="wallet-menu">
                     {modalButton}
                   </div>
-                  <Typography variant="h6">Connect your wallet to wrap sHEC</Typography>
+                  <Typography variant="h6">Connect your wallet to wrap sPAPA</Typography>
                 </div>
               ) : (
                 <>
@@ -236,9 +236,9 @@ function Wrap() {
                             <Typography variant="body1" className="stake-note" color="textSecondary">
                               {view === 0 && (
                                 <>
-                                  First time wrapping <b>sHEC</b>?
+                                  First time wrapping <b>sPAPA</b>?
                                   <br />
-                                  Please approve Hector Dao to use your <b>sHEC</b> for wrapping.
+                                  Please approve PapaDao to use your <b>sPAPA</b> for wrapping.
                                 </>
                               )}
                             </Typography>
@@ -279,7 +279,7 @@ function Wrap() {
                               onChangeWrap("wrap");
                             }}
                           >
-                            {txnButtonText(pendingTransactions, "wrapping", "Wrap sHEC")}
+                            {txnButtonText(pendingTransactions, "wrapping", "Wrap sPAPA")}
                           </Button>
                         ) : (
                           <Button
@@ -306,7 +306,7 @@ function Wrap() {
                             onChangeWrap("unwrap");
                           }}
                         >
-                          {txnButtonText(pendingTransactions, "unwrapping", "Unwrap sHEC")}
+                          {txnButtonText(pendingTransactions, "unwrapping", "Unwrap sPAPA")}
                         </Button>
                       </TabPanel>
                     </Box>
@@ -315,8 +315,8 @@ function Wrap() {
                       <Box padding={1}>
                         <Typography variant="body2" className={classes.textHighlight}>
                           {isUnwrap
-                            ? `Unwrapping ${quantity} wsHEC will result in ${trim(convertedQuantity, 4)} sHEC`
-                            : `Wrapping ${quantity} sHEC will result in ${trim(convertedQuantity, 4)} wsHEC`}
+                            ? `Unwrapping ${quantity} wsPAPA will result in ${trim(convertedQuantity, 4)} sPAPA`
+                            : `Wrapping ${quantity} sPAPA will result in ${trim(convertedQuantity, 4)} wsPAPA`}
                         </Typography>
                       </Box>
                     )}
@@ -326,13 +326,13 @@ function Wrap() {
                     <div className="data-row">
                       <Typography variant="body1">Wrappable Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(sHecBalance, 4)} sHEC</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(sHecBalance, 4)} sPAPA</>}
                       </Typography>
                     </div>
                     <div className="data-row">
                       <Typography variant="body1">Unwrappable Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(wsHecBalance, 4)} wsHEC</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(wsHecBalance, 4)} wsPAPA</>}
                       </Typography>
                     </div>
                   </div>
