@@ -1,6 +1,6 @@
 import { StaticJsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers";
 import { BigNumber, ethers } from "ethers";
-import { abi as MimBondContract } from "src/abi/bonds/MimContract.json";
+import { abi as MimBondContract } from "src/abi/bonds/Mim4V2Contract.json";
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
 import { getBondCalculator, getBondCalculator1 } from "src/helpers/BondCalculator";
 import { addresses } from "src/constants";

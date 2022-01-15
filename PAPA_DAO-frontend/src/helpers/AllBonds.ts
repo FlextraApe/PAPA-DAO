@@ -1,33 +1,25 @@
 import { StableBond, LPBond, NetworkID, CustomBond, BondType } from "src/lib/Bond";
 import { addresses } from "src/constants";
 
-import { ReactComponent as DaiImg } from "src/assets/tokens/DAI.svg";
-import { ReactComponent as HecDaiimg } from "src/assets/tokens/HEC-DAI.svg";
 import { ReactComponent as PAPAMimimg } from "src/assets/tokens/PAPA-MIM.svg";
 import { ReactComponent as wAVAXImg } from "src/assets/tokens/wAVAX.svg";
-import { ReactComponent as UsdcImg } from "src/assets/tokens/USDC.svg";
 import { ReactComponent as MimImg } from "src/assets/tokens/MIM.svg";
 import { ReactComponent as UsdtImg } from "src/assets/tokens/USDT.svg";
 import { ReactComponent as PapaAvaxImg } from "src/assets/tokens/PAPA-wAVAX.svg";
-import { ReactComponent as HecUsdcImg } from "src/assets/tokens/HEC-USDC.svg";
 
-import { abi as BondHecDaiContract } from "src/abi/bonds/HecDaiContract.json";
+import { abi as BondPapaMimContract } from "src/abi/bonds/PapaMimContract.json";
 import { abi as BondPapaAvaxContract } from "src/abi/bonds/BondPapaAvaxContract.json";
 import { abi as ReservePapaAvaxContract } from "src/abi/reserves/ReservePapaAvax.json";
-import { abi as HecUsdcContract } from "src/abi/bonds/HecUsdcContract.json";
-
-import { abi as DaiBondContract } from "src/abi/bonds/DaiContract.json";
-import { abi as UsdtBondContract } from "src/abi/bonds/Usdt.json";
+import { abi as UsdtBondContract } from "src/abi/bonds/UsdtContrat.json";
 import { abi as MimBondContract } from "src/abi/bonds/MimContract.json";
 import { abi as MimBondContract4 } from "src/abi/bonds/MimBondContract_4.json";
 import { abi as MimBondContract4V2 } from "src/abi/bonds/Mim4V2Contract.json";
 import { abi as PapaMimBondContract4 } from "src/abi/bonds/PapaMimBondContract_4.json";
 import { abi as PapaMimBondContract4V2 } from "src/abi/bonds/PapaMim4V2Contract.json";
-import { abi as ReserveHecDaiContract } from "src/abi/reserves/HecDai.json";
-import { abi as ReserveHecUsdcContract } from "src/abi/reserves/HecUsdc.json";
+import { abi as ReservePapaMimContract } from "src/abi/reserves/PapaMim.json";
 import { getBondCalculator } from "src/helpers/BondCalculator";
 
-import { abi as EthBondContract } from "src/abi/bonds/FtmContract.json";
+import { abi as EthBondContract } from "src/abi/bonds/AvaxContract.json";
 
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
 
@@ -38,7 +30,7 @@ export const mim = new StableBond({
   displayName: "MIM",
   bondToken: "MIM",
   bondIconSvg: MimImg,
-  bondContractABI: DaiBondContract,
+  bondContractABI: MimBondContract,
   fourAddress: "0xe416939731c5d308CBA5B6FA0C4A32A9d2f125B4",
   additionValue: -1150261659697897638102474,
   networkAddrs: {
@@ -58,7 +50,7 @@ export const usdt = new StableBond({
   bondToken: "USDT",
   decimals: 6,
   bondIconSvg: UsdtImg,
-  bondContractABI: DaiBondContract,
+  bondContractABI: UsdtBondContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x3e185190f044B3c887b65c11657B0d5433560618",
@@ -105,8 +97,8 @@ export const papa_mim = new LPBond({
   displayName: "PAPA-MIM LP",
   bondToken: "MIM",
   bondIconSvg: PAPAMimimg,
-  bondContractABI: BondHecDaiContract,
-  reserveContract: ReserveHecDaiContract,
+  bondContractABI: BondPapaMimContract,
+  reserveContract: ReservePapaMimContract,
   fourAddress: "0x72B6623055Cf0205A652773F8d2d6aA00229a030",
   substractionValue: 3626460866383219298,
   networkAddrs: {
@@ -210,7 +202,7 @@ export const papa_mim_4 = new LPBond({
   isFour: true,
   isTotal: true,
   bondContractABI: PapaMimBondContract4,
-  reserveContract: ReserveHecDaiContract,
+  reserveContract: ReservePapaMimContract,
   isOld: true,
   networkAddrs: {
     [NetworkID.Mainnet]: {
@@ -234,7 +226,7 @@ export const papa_mim_4_v2 = new LPBond({
   isFour: true,
   isTotal: true,
   bondContractABI: PapaMimBondContract4V2,
-  reserveContract: ReserveHecDaiContract,
+  reserveContract: ReservePapaMimContract,
   additionValue: 3626460866383219298,
   networkAddrs: {
     [NetworkID.Mainnet]: {
