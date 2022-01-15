@@ -1,4 +1,4 @@
-# [Hector Frontend](https://app.hectordao.com/)
+# [PAPA Frontend](https://app.hectordao.com/)
 This is the front-end repo for Hector that allows users be part of the future of Greece. 
 
 ##  🔧 Setting up Local Development
