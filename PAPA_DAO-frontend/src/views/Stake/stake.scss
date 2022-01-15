@@ -1,3 +1,8 @@
+.stake {
+  display: grid;
+  grid: 1fr max-content / 1fr;
+}
+
 #stake-view {
   display: flex;
   flex-direction: column;
@@ -138,17 +143,6 @@
   justify-content: center;
 }
 
-.stake-warmup-text {
-  justify-content: space-around;
-  align-items: center;
-  height: auto;
-  padding-top: 1rem;
-}
-
-.mobile .stake-warmup-text {
-  justify-content: center;
-}
-
 .stake-action-row [role="tabpanel"] {
   width: 99%;
   min-width: 162px;
@@ -185,26 +179,8 @@
   justify-self: center;
 }
 
-.exit-button {
-  align-self: center;
-  width: auto;
-  margin-top: 8px !important;
-  min-width: 103px !important;
-  max-width: 542px !important;
-  height: 28px !important;
-}
-
 .text-right {
   text-align: right;
-}
-.exit-button span{
-  font-weight: 500!important;
-  font-size: 14px;
-}
-
-.mobile .exit-button {
-  width: 100% !important;
-  max-width: 542px;
 }
 
 .staking-area {

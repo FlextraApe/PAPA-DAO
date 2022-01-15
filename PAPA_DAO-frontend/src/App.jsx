@@ -251,9 +251,9 @@ function App() {
               })}
               <ChooseBond />
             </Route>
-            <Route path="/calculator">
+            {/* <Route path="/calculator">
               <Calculator />
-            </Route>
+            </Route> */}
 
             <Route component={NotFound} />
           </Switch>
