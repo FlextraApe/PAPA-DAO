@@ -19,14 +19,14 @@ export const getBalances = createAsyncThunk(
     const spapaBalance = await spapaContract.balanceOf(address);
     const wspapaContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, provider);
     const wspapaBalance = await wspapaContract.balanceOf(address);
-    const wshecAsShec = await wspapaContract.wsPAPATosPAPA(wspapaBalance);
+    const wspapaAsSpapa = await wspapaContract.wsPAPATosPAPA(wspapaBalance);
 
     return {
       balances: {
         hec: ethers.utils.formatUnits(papaBalance, "gwei"),
         shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
         wshec: ethers.utils.formatEther(wspapaBalance),
-        wshecAsShec: ethers.utils.formatUnits(wshecAsShec, "gwei"),
+        wspapaAsSpapa: ethers.utils.formatUnits(wspapaAsSpapa, "gwei"),
       },
     };
   },
@@ -178,7 +178,7 @@ interface IAccountSlice {
     dai: string;
     oldshec: string;
     wshec: string;
-    wshecAsShec: string;
+    wspapaAsSpapa: string;
   };
   wrapping: {
     shecWrap: number;
@@ -189,7 +189,7 @@ interface IAccountSlice {
 const initialState: IAccountSlice = {
   loading: false,
   bonds: {},
-  balances: { hec: "", shec: "", dai: "", oldshec: "", wshec: "", wshecAsShec: "" },
+  balances: { hec: "", shec: "", dai: "", oldshec: "", wshec: "", wspapaAsSpapa: "" },
   wrapping: { shecWrap: 0, wshecUnwrap: 0 },
 };
 

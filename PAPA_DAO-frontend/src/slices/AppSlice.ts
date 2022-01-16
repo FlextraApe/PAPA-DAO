@@ -72,18 +72,18 @@ export const loadAppDetails = createAsyncThunk(
       console.error("Returned a null response from dispatch(loadMarketPrice)");
       return;
     }
-    const sHecMainContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sPAPAv2, provider);
-    const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
-    const oldsHecContract = new ethers.Contract(
+    const sPapaMainContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sPAPAv2, provider);
+    const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
+    const oldsPapaContract = new ethers.Contract(
       addresses[networkID].OLD_SPAPA_ADDRESS as string,
       [circulatingSupply],
       provider,
     );
-    const old_circ = await oldsHecContract.circulatingSupply();
+    const old_circ = await oldsPapaContract.circulatingSupply();
     const stakingTVL = parseFloat(graphData.data.protocolMetrics[0].totalValueLocked);
-    const circ = await sHecMainContract.circulatingSupply();
+    const circ = await sPapaMainContract.circulatingSupply();
     const circSupply = parseFloat(graphData.data.protocolMetrics[0].papaCirculatingSupply);
-    const total = await hecContract.totalSupply();
+    const total = await papaContract.totalSupply();
     const totalSupply = total / 1000000000;
     const marketCap = marketPrice * circSupply;
     const marketPriceString = marketPrice ? "$" + marketPrice.toFixed(2) : "";
@@ -174,7 +174,7 @@ export const findOrLoadMarketPrice = createAsyncThunk(
 
 /**
  * - fetches the PAPA price from CoinGecko (via getTokenPrice)
- * - falls back to fetch marketPrice from hec-dai contract
+ * - falls back to fetch marketPrice from papa-mim contract
  * - updates the App.slice when it runs
  */
 const loadMarketPrice = createAsyncThunk("app/loadMarketPrice", async ({ networkID, provider }: IBaseAsyncThunk) => {

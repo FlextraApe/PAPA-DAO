@@ -41,7 +41,7 @@ function PapaSnackbar({ message, duration, severity }) {
   );
 }
 
-export const hecToast = {
+export const papaToast = {
   success: message => {
     PapaSnackbar(message, null, "success");
   },
