@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function HecSnackbar({ message, duration, severity }) {
+function PapaSnackbar({ message, duration, severity }) {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
 
@@ -43,15 +43,15 @@ function HecSnackbar({ message, duration, severity }) {
 
 export const hecToast = {
   success: message => {
-    HecSnackbar(message, null, "success");
+    PapaSnackbar(message, null, "success");
   },
   error: message => {
-    HecSnackbar(message, null, "error");
+    PapaSnackbar(message, null, "error");
   },
   info: message => {
-    HecSnackbar(message, null, "info");
+    PapaSnackbar(message, null, "info");
   },
   warn: message => {
-    HecSnackbar(message, null, "warning");
+    PapaSnackbar(message, null, "warning");
   },
 };

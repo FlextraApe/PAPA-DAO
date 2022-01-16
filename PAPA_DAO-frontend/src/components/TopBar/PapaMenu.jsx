@@ -7,7 +7,7 @@ import { ReactComponent as spapaTokenImg } from "../../assets/tokens/SPAPA.svg";
 import { ReactComponent as papaTokenImg } from "../../assets/tokens/PAPA.svg";
 import { ReactComponent as wspapaTokenImg } from "../../assets/tokens/PAPA.svg";
 
-import "./hecmenu.scss";
+import "./papamenu.scss";
 import { useWeb3Context } from "../../hooks/web3Context";
 
 import PAPAImg from "src/assets/tokens/PAPA.png";
@@ -18,7 +18,7 @@ import { NavLink } from "react-router-dom";
 const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   if (window.ethereum) {
     const host = window.location.origin;
-    // NOTE (appleseed): 33T token defaults to sHEC logo since we don't have a 33T logo yet
+    // NOTE (appleseed): 33T token defaults to sPAPA logo since we don't have a 33T logo yet
     let tokenPath, decimals;
     switch (tokenSymbol) {
       case "wsPAPA":
@@ -53,7 +53,7 @@ const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   }
 };
 
-function HecMenu() {
+function PapaMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const isEthereumAPIAvailable = window.ethereum;
   const { chainID } = useWeb3Context();
@@ -69,15 +69,15 @@ function HecMenu() {
   };
 
   const open = Boolean(anchorEl);
-  const id = "hec-popper";
+  const id = "papa-popper";
   return (
     <Box
       component="div"
       onMouseEnter={e => handleClick(e)}
       onMouseLeave={e => handleClick(e)}
-      id="hec-menu-button-hover"
+      id="papa-menu-button-hover"
     >
-      <Button id="hec-menu-button" size="large" variant="contained" color="secondary" title="PAPA" aria-describedby={id}>
+      <Button id="papa-menu-button" size="large" variant="contained" color="secondary" title="PAPA" aria-describedby={id}>
         <SvgIcon component={InfoIcon} color="primary" />
         <Typography>PAPA</Typography>
       </Button>
@@ -86,7 +86,7 @@ function HecMenu() {
         {({ TransitionProps }) => {
           return (
             <Fade {...TransitionProps} timeout={100}>
-              <Paper className="hec-menu" elevation={1}>
+              <Paper className="papa-menu" elevation={1}>
                 <Box component="div" className="buy-tokens">
                   <Link
                     href={`https://traderjoexyz.com/#/trade?inputCurrency=&outputCurrency=${PAPA_ADDRESS}`}
@@ -148,4 +148,4 @@ function HecMenu() {
   );
 }
 
-export default HecMenu;
+export default PapaMenu;

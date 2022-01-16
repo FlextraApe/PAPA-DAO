@@ -84,7 +84,7 @@ const commonSettings = {
           borderRadius: "10px",
           overflow: "hidden",
         },
-        "&.hec-menu": {
+        "&.papa-menu": {
           padding: "22px 0px",
           borderRadius: "10px",
           margin: "0px",

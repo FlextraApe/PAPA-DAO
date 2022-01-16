@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Box, Button, SvgIcon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ReactComponent as MenuIcon } from "../../assets/icons/hamburger.svg";
-import HecMenu from "./HecMenu.jsx";
+import PapaMenu from "./PapaMenu.jsx";
 import ThemeSwitcher from "./ThemeSwitch.jsx";
 import ConnectMenu from "./ConnectMenu.jsx";
 import "./topbar.scss";
@@ -48,7 +48,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
         </Button>
 
         <Box display="flex">
-          {!isVerySmallScreen && <HecMenu />}
+          {!isVerySmallScreen && <PapaMenu />}
 
           <ConnectMenu theme={theme} />
 

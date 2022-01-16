@@ -98,7 +98,7 @@
 	fill: #004ffe;
 }
 
-.app.light #hec-menu-button {
+.app.light #papa-menu-button {
 	border: 1px solid #004ffe;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -370,14 +370,14 @@
 	fill: #FFFFFF;
 }
 
-.app.dark #hec-menu-button {
+.app.dark #papa-menu-button {
 	border: 1px solid #004ffe;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: 5px;
 	background: #20376a;
 }
-.app.dark #hec-menu-button:hover path{
+.app.dark #papa-menu-button:hover path{
 	fill: #fff;
 }
 

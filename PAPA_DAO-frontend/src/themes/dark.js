@@ -92,7 +92,7 @@ export const dark = responsiveFontSizes(
             "&.hec-modal": {
               backgroundColor: darkTheme.modalBg,
             },
-            "&.hec-menu": {
+            "&.papa-menu": {
               backgroundColor: darkTheme.menuBg,
               backdropFilter: "blur(33px)",
             },

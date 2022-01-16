@@ -58,7 +58,7 @@ function TreasuryDashboard() {
     }
   });
 
-  const wsHecPrice = useSelector(state => {
+  const wsPapaPrice = useSelector(state => {
     return state.app.marketPrice * state.app.currentIndex;
   });
 
@@ -139,7 +139,7 @@ function TreasuryDashboard() {
                 </Typography>
 
                 <Typography variant="h5">
-                  {wsHecPrice ? formatCurrency(wsHecPrice, 2) : <Skeleton type="text" />}
+                  {wsPapaPrice ? formatCurrency(wsPapaPrice, 2) : <Skeleton type="text" />}
                 </Typography>
               </Box>
 

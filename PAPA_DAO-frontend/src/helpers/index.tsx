@@ -19,7 +19,7 @@ export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   return marketPrice;
 }
 
-export async function getTokenPrice(tokenId = "hector-dao") {
+export async function getTokenPrice(tokenId = "papa-dao") {
   const resp = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${tokenId}&vs_currencies=usd`);
   let tokenPrice: number = resp.data[tokenId].usd;
   return tokenPrice;

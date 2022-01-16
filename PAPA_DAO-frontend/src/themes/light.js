@@ -87,7 +87,7 @@ export const light = responsiveFontSizes(
             "&.hec-modal": {
               backgroundColor: lightTheme.modalBg,
             },
-            "&.hec-menu": {
+            "&.papa-menu": {
               backgroundColor: lightTheme.menuBg,
               backdropFilter: "blur(33px)",
             },

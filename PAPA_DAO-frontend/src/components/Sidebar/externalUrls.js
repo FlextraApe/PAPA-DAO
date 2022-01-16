@@ -19,7 +19,7 @@ const externalUrls = [
   //   icon: <SvgIcon viewBox="0 0 155 172" color="primary" component={SpiritSwapIcon} />,
   // },
   // {
-  //   title: "Hector Lend",
+  //   title: "Papa Lend",
   //   label: "(Coming soon)",
   //   icon: <MonetizationOnOutlined viewBox="0 0 20 24" />,
   // },
@@ -35,7 +35,7 @@ const externalUrls = [
   },
   // {
   //   title: "Governance",
-  //   url: "https://snapshot.org/#/hectordao.eth",
+  //   url: "https://snapshot.org/#/papardao.co",
   //   icon: <SvgIcon color="primary" component={GovIcon} />,
   // },
   {
