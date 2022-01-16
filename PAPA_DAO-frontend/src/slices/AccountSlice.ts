@@ -47,7 +47,7 @@ export const loadAccountDetails = createAsyncThunk(
     let expiry = 0;
 
     const daiContract = new ethers.Contract(addresses[networkID].MIM_ADDRESS as string, ierc20Abi, provider);
-    const daiBalance = await daiContract.balanceOf(address);
+    const mimBalance = await daiContract.balanceOf(address);
 
     const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
     papaBalance = await papaContract.balanceOf(address);
@@ -74,7 +74,7 @@ export const loadAccountDetails = createAsyncThunk(
 
     return {
       balances: {
-        dai: ethers.utils.formatEther(daiBalance),
+        dai: ethers.utils.formatEther(mimBalance),
         hec: ethers.utils.formatUnits(papaBalance, "gwei"),
         shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
         oldshec: ethers.utils.formatUnits(oldspapaBalance, "gwei"),

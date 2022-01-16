@@ -288,7 +288,7 @@ function Wrap() {
                             color="primary"
                             disabled={isPendingTxn(pendingTransactions, "approve_wrapping")}
                             onClick={() => {
-                              onSeekApproval("shec");
+                              onSeekApproval("spapa");
                             }}
                           >
                             {txnButtonText(pendingTransactions, "approve_wrapping", "Approve")}

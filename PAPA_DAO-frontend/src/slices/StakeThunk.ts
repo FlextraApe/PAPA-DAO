@@ -25,9 +25,9 @@ function alreadyApprovedToken(token: string, stakeAllowance: BigNumber, unstakeA
   let applicableAllowance = bigZero;
 
   // determine which allowance to check
-  if (token === "hec") {
+  if (token === "papa") {
     applicableAllowance = stakeAllowance;
-  } else if (token === "shec") {
+  } else if (token === "spapa") {
     applicableAllowance = unstakeAllowance;
   }
 
@@ -69,26 +69,26 @@ export const changeApproval = createAsyncThunk(
     }
 
     try {
-      if (token === "hec") {
+      if (token === "papa") {
         // won't run if stakeAllowance > 0
         approveTx = await papaContract.approve(
           addresses[networkID].STAKING_HELPER_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
-      } else if (token === "shec") {
+      } else if (token === "spapa") {
         approveTx = await spapaContract.approve(
           addresses[networkID].STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
-      } else if (token === "oldshec") {
+      } else if (token === "oldspapa") {
         approveTx = await oldspapaContract.approve(
           addresses[networkID].OLD_STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
       }
 
-      const text = "Approve " + (token === "hec" ? "Staking" : "Unstaking");
-      const pendingTxnType = token === "hec" ? "approve_staking" : "approve_unstaking";
+      const text = "Approve " + (token === "papa" ? "Staking" : "Unstaking");
+      const pendingTxnType = token === "papa" ? "approve_staking" : "approve_unstaking";
       dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
 
       await approveTx.wait();

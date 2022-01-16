@@ -24,7 +24,7 @@ function alreadyApprovedToken(token: string, wrapAllowance: BigNumber, unwrapAll
   let applicableAllowance = bigZero;
 
   // determine which allowance to check
-  if (token === "shec") {
+  if (token === "spapa") {
     applicableAllowance = wrapAllowance;
   } else if (token === "wshec") {
     applicableAllowance = unwrapAllowance;
@@ -65,7 +65,7 @@ export const changeApproval = createAsyncThunk(
     }
 
     try {
-      if (token === "shec") {
+      if (token === "spapa") {
         // won't run if wrapAllowance > 0
         approveTx = await shecContract.approve(
           addresses[networkID].WSPAPA_ADDRESS,
@@ -78,8 +78,8 @@ export const changeApproval = createAsyncThunk(
         );
       }
 
-      const text = "Approve " + (token === "shec" ? "Wrapping" : "Unwrapping");
-      const pendingTxnType = token === "shec" ? "approve_wrapping" : "approve_unwrapping";
+      const text = "Approve " + (token === "spapa" ? "Wrapping" : "Unwrapping");
+      const pendingTxnType = token === "spapa" ? "approve_wrapping" : "approve_unwrapping";
       if (approveTx) {
         dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
 

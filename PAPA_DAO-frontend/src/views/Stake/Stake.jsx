@@ -162,9 +162,9 @@ function Stake() {
 
   const hasAllowance = useCallback(
     token => {
-      if (token === "hec") return stakeAllowance > 0;
-      if (token === "shec") return unstakeAllowance > 0;
-      if (token === "oldshec") return oldunstakeAllowance > 0;
+      if (token === "papa") return stakeAllowance > 0;
+      if (token === "spapa") return unstakeAllowance > 0;
+      if (token === "oldspapa") return oldunstakeAllowance > 0;
       return 0;
     },
     [stakeAllowance, unstakeAllowance],
@@ -320,7 +320,7 @@ function Stake() {
 
                         <Box className="stake-action-row " display="flex" alignItems="center">
                           {address && !isAllowanceDataLoading ? (
-                            (!hasAllowance("hec") && view === 0) || (!hasAllowance("shec") && view === 1) ? (
+                            (!hasAllowance("papa") && view === 0) || (!hasAllowance("spapa") && view === 1) ? (
                               <Box className="help-text">
                                 <Typography variant="body1" className="stake-note" color="textSecondary">
                                   {view === 0 ? (
@@ -366,7 +366,7 @@ function Stake() {
                           <TabPanel value={view} index={0} className="stake-tab-panel">
                             {isAllowanceDataLoading ? (
                               <Skeleton />
-                            ) : address && hasAllowance("hec") ? (
+                            ) : address && hasAllowance("papa") ? (
                               <Button
                                 className="stake-button"
                                 variant="outlined"
@@ -385,7 +385,7 @@ function Stake() {
                                 color="primary"
                                 disabled={isPendingTxn(pendingTransactions, "approve_staking")}
                                 onClick={() => {
-                                  onSeekApproval("hec");
+                                  onSeekApproval("papa");
                                 }}
                               >
                                 {txnButtonText(pendingTransactions, "approve_staking", "Approve")}
@@ -395,7 +395,7 @@ function Stake() {
                           <TabPanel value={view} index={1} className="stake-tab-panel">
                             {isAllowanceDataLoading ? (
                               <Skeleton />
-                            ) : address && hasAllowance("shec") ? (
+                            ) : address && hasAllowance("spapa") ? (
                               <Button
                                 className="stake-button"
                                 variant="outlined"
@@ -414,7 +414,7 @@ function Stake() {
                                 color="primary"
                                 disabled={isPendingTxn(pendingTransactions, "approve_unstaking")}
                                 onClick={() => {
-                                  onSeekApproval("shec");
+                                  onSeekApproval("spapa");
                                 }}
                               >
                                 {txnButtonText(pendingTransactions, "approve_unstaking", "Approve")}
