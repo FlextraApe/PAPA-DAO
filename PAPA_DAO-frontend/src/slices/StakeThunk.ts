@@ -1,7 +1,7 @@
 import { ethers, BigNumber } from "ethers";
 import { addresses, messages } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
-import { abi as HectorStaking } from "../abi/HectorStakingv2.json";
+import { abi as PapaStaking } from "../abi/PapaStakingv2.json";
 import { abi as StakingHelper } from "../abi/StakingHelper.json";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./PendingTxnsSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -132,14 +132,14 @@ export const changeStake = createAsyncThunk(
     const signer = provider.getSigner();
     let staking, stakingHelper;
     if (isOld) {
-      staking = new ethers.Contract(addresses[networkID].OLD_STAKING_ADDRESS as string, HectorStaking, signer);
+      staking = new ethers.Contract(addresses[networkID].OLD_STAKING_ADDRESS as string, PapaStaking, signer);
       stakingHelper = new ethers.Contract(
         addresses[networkID].OLD_STAKING_HELPER_ADDRESS as string,
         StakingHelper,
         signer,
       );
     } else {
-      staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, HectorStaking, signer);
+      staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, PapaStaking, signer);
       stakingHelper = new ethers.Contract(addresses[networkID].STAKING_HELPER_ADDRESS as string, StakingHelper, signer);
     }
 
@@ -191,7 +191,7 @@ export const changeForfeit = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, HectorStaking, signer);
+    const staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, PapaStaking, signer);
     let forfeitTx;
 
     try {
@@ -226,7 +226,7 @@ export const changeClaim = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, HectorStaking, signer);
+    const staking = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, PapaStaking, signer);
     let claimTx;
 
     try {

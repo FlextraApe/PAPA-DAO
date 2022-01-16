@@ -35,7 +35,7 @@ export default function WarmUp({
   const classes = useStyles();
 
   return (
-    <div className={"warm-up MuiPaper-root hec-card "}>
+    <div className={"warm-up MuiPaper-root papa-card "}>
       <>
         <div className="card-header header">
           <div className="title">

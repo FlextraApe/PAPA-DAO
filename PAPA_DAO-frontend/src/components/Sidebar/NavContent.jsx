@@ -30,6 +30,9 @@ function NavContent() {
     if (currentPath.indexOf("stake") >= 0 && page === "stake") {
       return true;
     }
+    if (currentPath.indexOf("wrap") >= 0 && page === "wrap") {
+      return true;
+    }
     if ((currentPath.indexOf("bonds") >= 0 || currentPath.indexOf("choose_bond") >= 0) && page === "bonds") {
       return true;
     }

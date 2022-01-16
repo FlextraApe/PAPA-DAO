@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
-import { abi as sHECv2 } from "../abi/sHecv2.json";
+import { abi as sPAPAv2 } from "../abi/sPapav2.json";
 import { abi as wsPAPA } from "../abi/wsPapa.json";
-import { abi as HectorStakingv2 } from "../abi/HectorStakingv2.json";
+import { abi as PapaStakingv2 } from "../abi/PapaStakingv2.json";
 import { setAll } from "../helpers";
 
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
@@ -13,19 +13,19 @@ import { IBaseAddressAsyncThunk, ICalcUserBondDetailsAsyncThunk } from "./interf
 export const getBalances = createAsyncThunk(
   "account/getBalances",
   async ({ address, networkID, provider }: IBaseAddressAsyncThunk) => {
-    const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
-    const hecBalance = await hecContract.balanceOf(address);
-    const shecContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20Abi, provider);
-    const shecBalance = await shecContract.balanceOf(address);
-    const wshecContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, provider);
-    const wshecBalance = await wshecContract.balanceOf(address);
-    const wshecAsShec = await wshecContract.wsPAPATosPAPA(wshecBalance);
+    const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
+    const papaBalance = await papaContract.balanceOf(address);
+    const spapaContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20Abi, provider);
+    const spapaBalance = await spapaContract.balanceOf(address);
+    const wspapaContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, provider);
+    const wspapaBalance = await wspapaContract.balanceOf(address);
+    const wshecAsShec = await wspapaContract.wsPAPATosPAPA(wspapaBalance);
 
     return {
       balances: {
-        hec: ethers.utils.formatUnits(hecBalance, "gwei"),
-        shec: ethers.utils.formatUnits(shecBalance, "gwei"),
-        wshec: ethers.utils.formatEther(wshecBalance),
+        hec: ethers.utils.formatUnits(papaBalance, "gwei"),
+        shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
+        wshec: ethers.utils.formatEther(wspapaBalance),
         wshecAsShec: ethers.utils.formatUnits(wshecAsShec, "gwei"),
       },
     };
@@ -35,9 +35,9 @@ export const getBalances = createAsyncThunk(
 export const loadAccountDetails = createAsyncThunk(
   "account/loadAccountDetails",
   async ({ networkID, provider, address }: IBaseAddressAsyncThunk) => {
-    let hecBalance = 0;
-    let shecBalance = 0;
-    let oldshecBalance = 0;
+    let papaBalance = 0;
+    let spapaBalance = 0;
+    let oldspapaBalance = 0;
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
     let oldunstakeAllowance = 0;
@@ -49,35 +49,35 @@ export const loadAccountDetails = createAsyncThunk(
     const daiContract = new ethers.Contract(addresses[networkID].MIM_ADDRESS as string, ierc20Abi, provider);
     const daiBalance = await daiContract.balanceOf(address);
 
-    const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
-    hecBalance = await hecContract.balanceOf(address);
-    stakeAllowance = await hecContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+    const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
+    papaBalance = await papaContract.balanceOf(address);
+    stakeAllowance = await papaContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
 
-    const shecContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sHECv2, provider);
-    shecBalance = await shecContract.balanceOf(address);
-    unstakeAllowance = await shecContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
-    const wrapAllowance = await shecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    const spapaContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sPAPAv2, provider);
+    spapaBalance = await spapaContract.balanceOf(address);
+    unstakeAllowance = await spapaContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+    const wrapAllowance = await spapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
 
-    const oldshecContract = new ethers.Contract(addresses[networkID].OLD_SPAPA_ADDRESS as string, sHECv2, provider);
-    oldshecBalance = await oldshecContract.balanceOf(address);
-    oldunstakeAllowance = await oldshecContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
+    const oldspapaContract = new ethers.Contract(addresses[networkID].OLD_SPAPA_ADDRESS as string, sPAPAv2, provider);
+    oldspapaBalance = await oldspapaContract.balanceOf(address);
+    oldunstakeAllowance = await oldspapaContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
 
-    const wshecContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, provider);
-    const unwrapAllowance = await wshecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
-    const wspapaBalance = await wshecContract.balanceOf(address);
+    const wspapaContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, provider);
+    const unwrapAllowance = await wspapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    const wspapaBalance = await wspapaContract.balanceOf(address);
 
-    const stakingContract = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, HectorStakingv2, provider,);
+    const stakingContract = new ethers.Contract(addresses[networkID].STAKING_ADDRESS as string, PapaStakingv2, provider,);
     const warmupInfo = (await stakingContract.warmupInfo(address));
     depositAmount = warmupInfo.deposit;
-    warmUpAmount = +ethers.utils.formatUnits((await shecContract.balanceForGons(warmupInfo.gons)), "gwei");
+    warmUpAmount = +ethers.utils.formatUnits((await spapaContract.balanceForGons(warmupInfo.gons)), "gwei");
     expiry = warmupInfo.expiry;
 
     return {
       balances: {
         dai: ethers.utils.formatEther(daiBalance),
-        hec: ethers.utils.formatUnits(hecBalance, "gwei"),
-        shec: ethers.utils.formatUnits(shecBalance, "gwei"),
-        oldshec: ethers.utils.formatUnits(oldshecBalance, "gwei"),
+        hec: ethers.utils.formatUnits(papaBalance, "gwei"),
+        shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
+        oldshec: ethers.utils.formatUnits(oldspapaBalance, "gwei"),
         wspapa: ethers.utils.formatEther(wspapaBalance),
       },
       staking: {

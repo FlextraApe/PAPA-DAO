@@ -63,7 +63,7 @@ function ChooseBond() {
       <div id="choose-bond-view">
         {!isAccountLoading && !_.isEmpty(accountBonds) && <ClaimBonds activeBonds={accountBonds} />}
         <Zoom in={true}>
-          <Paper className="hec-card">
+          <Paper className="papa-card">
             <Box className="card-header">
               <Typography variant="h5">Bond (4,4)</Typography>
               <RebaseTimer />
@@ -129,7 +129,7 @@ function ChooseBond() {
         </Zoom>
 
         {isSmallScreen && (
-          <Box className="hec-card-container">
+          <Box className="papa-card-container">
             <Grid container item spacing={2}>
               {bonds
                 .filter(bond => bond.isFour && !bond.isOld)
@@ -145,7 +145,7 @@ function ChooseBond() {
       
       <div id="choose-bond-view">
         <Zoom in={true}>
-          <Paper className="hec-card">
+          <Paper className="papa-card">
             <Box className="card-header">
               <Typography variant="h5">Bond (1,1)</Typography>
             </Box>
@@ -178,7 +178,7 @@ function ChooseBond() {
         </Zoom>
 
         {isSmallScreen && (
-          <Box className="hec-card-container">
+          <Box className="papa-card-container">
             <Grid container item spacing={2}>
               {bonds
                 .filter(bond => !bond.isFour && !bond.isOld)

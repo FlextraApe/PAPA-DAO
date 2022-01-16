@@ -51,7 +51,7 @@ function Bond({ bond }) {
       <Grid container id="bond-view">
         <Backdrop open={true}>
           <Fade in={true}>
-            <Paper className="hec-card hec-modal">
+            <Paper className="papa-card hec-modal">
               <BondHeader
                 bond={bond}
                 slippage={slippage}

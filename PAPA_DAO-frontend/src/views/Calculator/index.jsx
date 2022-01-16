@@ -72,7 +72,7 @@ function Calculator() {
     return (
         <div className="calculator-view">
             <Zoom in={true}>
-                <Paper className="hec-card calculator-card">
+                <Paper className="papa-card calculator-card">
                     <Grid className="calculator-card-grid" container direction="column" spacing={2}>
                         <Grid item>
                             <Box className="calculator-card-header">

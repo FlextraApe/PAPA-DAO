@@ -83,8 +83,8 @@ function App() {
 
   const [walletChecked, setWalletChecked] = useState(false);
 
-  const isAppLoading = useSelector(state => state.app.loading);
-  const isAppLoaded = useSelector(state => typeof state.app.marketPrice != "undefined"); // Hacky way of determining if we were able to load app Details.
+  // const isAppLoading = useSelector(state => state.app.loading);
+  // const isAppLoaded = useSelector(state => typeof state.app.marketPrice != "undefined"); // Hacky way of determining if we were able to load app Details.
   let { bonds } = useBonds();
   bonds = [...bonds, ...[mim4, papa_mim_4]];
   async function loadDetails(whichDetails) {

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "HectorStaking",
-  "sourceName": "contracts/dispersals/profits/HectorStaking.sol",
+  "contractName": "PapaStaking",
+  "sourceName": "contracts/dispersals/profits/PapaStaking.sol",
   "abi": [{
     "inputs": [{
       "internalType": "address",

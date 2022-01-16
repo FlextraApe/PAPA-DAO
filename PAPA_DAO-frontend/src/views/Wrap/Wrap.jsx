@@ -145,7 +145,7 @@ function Wrap() {
   return (
     <div id="stake-view">
       <Zoom in={true} onEntered={() => setZoomed(true)}>
-        <Paper className={`hec-card`}>
+        <Paper className={`papa-card`}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <div className="card-header">

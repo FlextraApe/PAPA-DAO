@@ -17,7 +17,7 @@
 	background: linear-gradient(2.46deg, #95b6ff -9.31%, rgba(255, 255, 255) 102.37%), #ffffff;
 }
 
-.app.light .MuiPaper-root.hec-card {
+.app.light .MuiPaper-root.papa-card {
 	background: -o-linear-gradient(top, #FFF3E1 0%, #FFDFAD 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFF3E1), to(#FFDFAD));
 	background: linear-gradient(180deg, #e6edff 0%, #d6e1fb 100%);
@@ -26,7 +26,7 @@
 	box-shadow: inset -9px -12px 25px -3px rgba(255, 255, 255, 0.24);
 	border-radius: 10px;
 }
-.app.light #choose-bond-view .hec-card .bond-hero h4 {
+.app.light #choose-bond-view .papa-card .bond-hero h4 {
  color: #222;
 }
 .app.light .stake-wallet-notification .wallet-menu .connect-button {
@@ -202,7 +202,7 @@
 	color: #161616;
 }
 
-.app.light #bond-view .MuiBackdrop-root .hec-card {
+.app.light #bond-view .MuiBackdrop-root .papa-card {
 	background: #d2e0ff;
 	border: 1px solid #004ffe;
 }
@@ -263,7 +263,7 @@
 	border-radius: 10px;
 }
 
-.app.dark .MuiPaper-root.hec-card {
+.app.dark .MuiPaper-root.papa-card {
 	background: #121f38;
 	border: 1px solid #004ffe;
 	-webkit-box-sizing: border-box;
@@ -329,7 +329,7 @@
 	word-break: break-all;
 }
 
-.app.dark #treasury-dashboard-view .hero-metrics .hec-card h5 {
+.app.dark #treasury-dashboard-view .hero-metrics .papa-card h5 {
 	color: #84a0df;
 }
 
@@ -490,7 +490,7 @@
 	color: #84a0df;
 }
 
-.app.dark #bond-view .MuiBackdrop-root .hec-card {
+.app.dark #bond-view .MuiBackdrop-root .papa-card {
 	background: #121f38;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
@@ -531,7 +531,7 @@
 }
 
 
-.app.dark #choose-bond-view .hec-card .bond-hero h4 {
+.app.dark #choose-bond-view .papa-card .bond-hero h4 {
 	color: #84a0df;
 	font-weight: 400 !important;
 }

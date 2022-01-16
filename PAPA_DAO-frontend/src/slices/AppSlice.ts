@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import { addresses } from "../constants";
-import { abi as HectorStakingv2 } from "../abi/HectorStakingv2.json";
+import { abi as PapaStakingv2 } from "../abi/PapaStakingv2.json";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
-import { abi as sHECv2 } from "../abi/sHecv2.json";
+import { abi as sPAPAv2 } from "../abi/sPapav2.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
 import apollo from "../lib/apolloClient.js";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -53,12 +53,12 @@ export const loadAppDetails = createAsyncThunk(
 
     const stakingContract = new ethers.Contract(
       addresses[networkID].STAKING_ADDRESS as string,
-      HectorStakingv2,
+      PapaStakingv2,
       provider,
     );
     const old_stakingContract = new ethers.Contract(
       addresses[networkID].OLD_STAKING_ADDRESS as string,
-      HectorStakingv2,
+      PapaStakingv2,
       provider,
     );
     let marketPrice;
@@ -72,7 +72,7 @@ export const loadAppDetails = createAsyncThunk(
       console.error("Returned a null response from dispatch(loadMarketPrice)");
       return;
     }
-    const sHecMainContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sHECv2, provider);
+    const sHecMainContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, sPAPAv2, provider);
     const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
     const oldsHecContract = new ethers.Contract(
       addresses[networkID].OLD_SPAPA_ADDRESS as string,

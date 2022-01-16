@@ -86,7 +86,7 @@ export const dark = responsiveFontSizes(
         MuiPaper: {
           root: {
             backgroundColor: darkTheme.paperBg,
-            "&.hec-card": {
+            "&.papa-card": {
               backgroundColor: darkTheme.paperBg,
             },
             "&.hec-modal": {

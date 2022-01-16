@@ -81,7 +81,7 @@ export const light = responsiveFontSizes(
         MuiPaper: {
           root: {
             backgroundColor: lightTheme.paperBg,
-            "&.hec-card": {
+            "&.papa-card": {
               backgroundColor: lightTheme.paperBg,
             },
             "&.hec-modal": {

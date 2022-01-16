@@ -232,7 +232,7 @@ function Stake() {
         )}
         <div id="stake-view">
           <Zoom in={true} onEntered={() => setZoomed(true)}>
-            <Paper className={`hec-card`}>
+            <Paper className={`papa-card`}>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
                   <div className="card-header">
@@ -470,7 +470,7 @@ function Stake() {
         {address && oldshecBalance > 0.0001 && (
           <div id="stake-view">
             <Zoom in={true} onEntered={() => setZoomed(true)}>
-              <Paper className={`hec-card`}>
+              <Paper className={`papa-card`}>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
                     <div className="card-header">
