@@ -81,9 +81,9 @@ export const loadAccountDetails = createAsyncThunk(
         wspapa: ethers.utils.formatEther(wspapaBalance),
       },
       staking: {
-        hecStake: +stakeAllowance,
-        hecUnstake: +unstakeAllowance,
-        oldhecUnstake: +oldunstakeAllowance,
+        papaStake: +stakeAllowance,
+        papaUnstake: +unstakeAllowance,
+        oldpapaUnstake: +oldunstakeAllowance,
       },
       wrapping: {
         hecWrap: +wrapAllowance,

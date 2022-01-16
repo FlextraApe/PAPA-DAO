@@ -46,13 +46,13 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const hecContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, signer);
-    const shecContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20Abi, signer);
-    const oldshecContract = new ethers.Contract(addresses[networkID].OLD_SPAPA_ADDRESS as string, ierc20Abi, signer);
+    const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, signer);
+    const spapaContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20Abi, signer);
+    const oldspapaContract = new ethers.Contract(addresses[networkID].OLD_SPAPA_ADDRESS as string, ierc20Abi, signer);
     let approveTx;
-    let stakeAllowance = await hecContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
-    let unstakeAllowance = await shecContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
-    let oldunstakeAllowance = await oldshecContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
+    let stakeAllowance = await papaContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+    let unstakeAllowance = await spapaContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+    let oldunstakeAllowance = await oldspapaContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
 
     // return early if approval has already happened
     if (alreadyApprovedToken(token, stakeAllowance, unstakeAllowance)) {
@@ -60,9 +60,9 @@ export const changeApproval = createAsyncThunk(
       return dispatch(
         fetchAccountSuccess({
           staking: {
-            hecStake: +stakeAllowance,
-            hecUnstake: +unstakeAllowance,
-            oldhecUnstake: +oldunstakeAllowance,
+            papaStake: +stakeAllowance,
+            papaUnstake: +unstakeAllowance,
+            oldpapaUnstake: +oldunstakeAllowance,
           },
         }),
       );
@@ -71,17 +71,17 @@ export const changeApproval = createAsyncThunk(
     try {
       if (token === "hec") {
         // won't run if stakeAllowance > 0
-        approveTx = await hecContract.approve(
+        approveTx = await papaContract.approve(
           addresses[networkID].STAKING_HELPER_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
       } else if (token === "shec") {
-        approveTx = await shecContract.approve(
+        approveTx = await spapaContract.approve(
           addresses[networkID].STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
       } else if (token === "oldshec") {
-        approveTx = await oldshecContract.approve(
+        approveTx = await oldspapaContract.approve(
           addresses[networkID].OLD_STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
@@ -105,16 +105,16 @@ export const changeApproval = createAsyncThunk(
     await sleep(2);
 
     // go get fresh allowances
-    stakeAllowance = await hecContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
-    unstakeAllowance = await shecContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
-    oldunstakeAllowance = await shecContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
+    stakeAllowance = await papaContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+    unstakeAllowance = await spapaContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+    oldunstakeAllowance = await spapaContract.allowance(address, addresses[networkID].OLD_STAKING_ADDRESS);
 
     return dispatch(
       fetchAccountSuccess({
         staking: {
-          hecStake: +stakeAllowance,
-          hecUnstake: +unstakeAllowance,
-          oldhecUnstake: +oldunstakeAllowance,
+          papaStake: +stakeAllowance,
+          papaUnstake: +unstakeAllowance,
+          oldpapaUnstake: +oldunstakeAllowance,
         },
       }),
     );

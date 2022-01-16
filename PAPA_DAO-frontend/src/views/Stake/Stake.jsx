@@ -63,13 +63,13 @@ function Stake() {
     return state.account.balances && state.account.balances.oldshec;
   });
   const stakeAllowance = useSelector(state => {
-    return state.account.staking && state.account.staking.hecStake;
+    return state.account.staking && state.account.staking.papaStake;
   });
   const unstakeAllowance = useSelector(state => {
-    return state.account.staking && state.account.staking.hecUnstake;
+    return state.account.staking && state.account.staking.papaUnstake;
   });
   const oldunstakeAllowance = useSelector(state => {
-    return state.account.staking && state.account.staking.oldhecUnstake;
+    return state.account.staking && state.account.staking.oldpapaUnstake;
   });
   const stakingRebase = useSelector(state => {
     return state.app.stakingRebase;
