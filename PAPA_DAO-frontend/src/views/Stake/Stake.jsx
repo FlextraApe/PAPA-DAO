@@ -317,7 +317,6 @@ function Stake() {
                           <Tab label="Stake" {...a11yProps(0)} />
                           <Tab label="Unstake" {...a11yProps(1)} />
                         </Tabs>
-
                         <Box className="stake-action-row " display="flex" alignItems="center">
                           {address && !isAllowanceDataLoading ? (
                             (!hasAllowance("papa") && view === 0) || (!hasAllowance("spapa") && view === 1) ? (
