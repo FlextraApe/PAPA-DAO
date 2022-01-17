@@ -25,7 +25,7 @@ export const getBalances = createAsyncThunk(
       balances: {
         papa: ethers.utils.formatUnits(papaBalance, "gwei"),
         spapa: ethers.utils.formatUnits(spapaBalance, "gwei"),
-        wshec: ethers.utils.formatEther(wspapaBalance),
+        wspapa: ethers.utils.formatEther(wspapaBalance),
         wspapaAsSpapa: ethers.utils.formatUnits(wspapaAsSpapa, "gwei"),
       },
     };
@@ -41,13 +41,13 @@ export const loadAccountDetails = createAsyncThunk(
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
     let oldunstakeAllowance = 0;
-    let daiBondAllowance = 0;
+    let mimBondAllowance = 0;
     let depositAmount = 0;
     let warmUpAmount = 0;
     let expiry = 0;
 
-    const daiContract = new ethers.Contract(addresses[networkID].MIM_ADDRESS as string, ierc20Abi, provider);
-    const mimBalance = await daiContract.balanceOf(address);
+    const mimContract = new ethers.Contract(addresses[networkID].MIM_ADDRESS as string, ierc20Abi, provider);
+    const mimBalance = await mimContract.balanceOf(address);
 
     const papaContract = new ethers.Contract(addresses[networkID].PAPA_ADDRESS as string, ierc20Abi, provider);
     papaBalance = await papaContract.balanceOf(address);
@@ -74,7 +74,7 @@ export const loadAccountDetails = createAsyncThunk(
 
     return {
       balances: {
-        dai: ethers.utils.formatEther(mimBalance),
+        mim: ethers.utils.formatEther(mimBalance),
         papa: ethers.utils.formatUnits(papaBalance, "gwei"),
         spapa: ethers.utils.formatUnits(spapaBalance, "gwei"),
         oldspapa: ethers.utils.formatUnits(oldspapaBalance, "gwei"),
@@ -95,7 +95,7 @@ export const loadAccountDetails = createAsyncThunk(
         expiryBlock: expiry,
       },
       bonding: {
-        daiAllowance: daiBondAllowance,
+        mimAllowance: mimBondAllowance,
       },
     };
   },
@@ -175,9 +175,9 @@ interface IAccountSlice {
   balances: {
     papa: string;
     spapa: string;
-    dai: string;
+    mim: string;
     oldspapa: string;
-    wshec: string;
+    wspapa: string;
     wspapaAsSpapa: string;
   };
   wrapping: {
@@ -189,7 +189,7 @@ interface IAccountSlice {
 const initialState: IAccountSlice = {
   loading: false,
   bonds: {},
-  balances: { papa: "", spapa: "", dai: "", oldspapa: "", wshec: "", wspapaAsSpapa: "" },
+  balances: { papa: "", spapa: "", mim: "", oldspapa: "", wspapa: "", wspapaAsSpapa: "" },
   wrapping: { spapaWrap: 0, wspapaUnwrap: 0 },
 };
 
