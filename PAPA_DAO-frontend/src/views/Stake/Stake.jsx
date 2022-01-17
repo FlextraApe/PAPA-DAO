@@ -54,13 +54,13 @@ function Stake() {
     return state.app.old_fiveDayRate;
   });
   const papaBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.hec;
+    return state.account.balances && state.account.balances.papa;
   });
   const spapaBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.shec;
+    return state.account.balances && state.account.balances.spapa;
   });
   const oldspapaBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.oldshec;
+    return state.account.balances && state.account.balances.oldspapa;
   });
   const stakeAllowance = useSelector(state => {
     return state.account.staking && state.account.staking.papaStake;

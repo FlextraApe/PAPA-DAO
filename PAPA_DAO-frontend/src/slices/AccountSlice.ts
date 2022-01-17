@@ -23,8 +23,8 @@ export const getBalances = createAsyncThunk(
 
     return {
       balances: {
-        hec: ethers.utils.formatUnits(papaBalance, "gwei"),
-        shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
+        papa: ethers.utils.formatUnits(papaBalance, "gwei"),
+        spapa: ethers.utils.formatUnits(spapaBalance, "gwei"),
         wshec: ethers.utils.formatEther(wspapaBalance),
         wspapaAsSpapa: ethers.utils.formatUnits(wspapaAsSpapa, "gwei"),
       },
@@ -75,9 +75,9 @@ export const loadAccountDetails = createAsyncThunk(
     return {
       balances: {
         dai: ethers.utils.formatEther(mimBalance),
-        hec: ethers.utils.formatUnits(papaBalance, "gwei"),
-        shec: ethers.utils.formatUnits(spapaBalance, "gwei"),
-        oldshec: ethers.utils.formatUnits(oldspapaBalance, "gwei"),
+        papa: ethers.utils.formatUnits(papaBalance, "gwei"),
+        spapa: ethers.utils.formatUnits(spapaBalance, "gwei"),
+        oldspapa: ethers.utils.formatUnits(oldspapaBalance, "gwei"),
         wspapa: ethers.utils.formatEther(wspapaBalance),
       },
       staking: {
@@ -173,10 +173,10 @@ export const calculateUserBondDetails = createAsyncThunk(
 interface IAccountSlice {
   bonds: { [key: string]: IUserBondDetails };
   balances: {
-    hec: string;
-    shec: string;
+    papa: string;
+    spapa: string;
     dai: string;
-    oldshec: string;
+    oldspapa: string;
     wshec: string;
     wspapaAsSpapa: string;
   };
@@ -189,7 +189,7 @@ interface IAccountSlice {
 const initialState: IAccountSlice = {
   loading: false,
   bonds: {},
-  balances: { hec: "", shec: "", dai: "", oldshec: "", wshec: "", wspapaAsSpapa: "" },
+  balances: { papa: "", spapa: "", dai: "", oldspapa: "", wshec: "", wspapaAsSpapa: "" },
   wrapping: { spapaWrap: 0, wspapaUnwrap: 0 },
 };
 

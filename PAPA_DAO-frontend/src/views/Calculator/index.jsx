@@ -15,7 +15,7 @@ function Calculator() {
     });
 
     const spapaBalance = useSelector(state => {
-        return state.account.balances && state.account.balances.shec;
+        return state.account.balances && state.account.balances.spapa;
     });
 
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);

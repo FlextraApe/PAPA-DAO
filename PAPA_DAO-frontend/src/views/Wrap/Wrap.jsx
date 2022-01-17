@@ -63,7 +63,7 @@ function Wrap() {
   });
 
   const sPapaBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.shec;
+    return state.account.balances && state.account.balances.spapa;
   });
   const wsPapaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.wspapa;
