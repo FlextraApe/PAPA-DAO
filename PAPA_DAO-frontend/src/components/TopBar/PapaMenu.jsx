@@ -128,7 +128,7 @@ function PapaMenu() {
                         />
                         <Typography variant="body1">sPAPA</Typography>
                       </Button>
-                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("wsHPAPA", WSPAPA_ADDRESS)}>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("wsPAPA", WSPAPA_ADDRESS)}>
                         <SvgIcon
                           component={wspapaTokenImg}
                           viewBox="0 0 100 100"
