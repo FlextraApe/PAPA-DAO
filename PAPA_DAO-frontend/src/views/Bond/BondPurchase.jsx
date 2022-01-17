@@ -96,9 +96,6 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
       maxQ = bond.maxBondPrice * bond.bondPrice.toString();
     } else {
       maxQ = bond.balance;
-      // if (bond.name == "hec_usdc_lp" || bond.isFour) {
-      //   maxQ = (parseFloat(maxQ) - 0.0000000000005).toFixed(14);
-      // }
     }
     if (maxQ < 0) {
       maxQ = 0;
@@ -135,9 +132,6 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
   const isAllowanceDataLoading = bond.allowance == null;
 
   let balance = trim(bond.balance, 4);
-  if (bond.name == "hec_usdc_lp") {
-    balance = new Intl.NumberFormat("en-US", { notation: "scientific" }).format(bond.balance);
-  }
   let reward;
   let displayName;
   if (bond.isFour) {
@@ -169,7 +163,7 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
                 </em>
               </div>
             ) : (
-              <FormControl className="hec-input" variant="outlined" color="primary" fullWidth>
+              <FormControl className="papa-input" variant="outlined" color="primary" fullWidth>
                 <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"

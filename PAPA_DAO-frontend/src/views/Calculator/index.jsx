@@ -14,15 +14,15 @@ function Calculator() {
         return state.app.stakingAPY;
     });
 
-    const shecBalance = useSelector(state => {
+    const spapaBalance = useSelector(state => {
         return state.account.balances && state.account.balances.shec;
     });
 
     const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-    const trimmedsHecBalance = trim(Number(shecBalance), 4);
+    const trimmedsPapaBalance = trim(Number(spapaBalance), 4);
     const trimeMarketPrice = trim(marketPrice, 2);
 
-    const [shecAmount, setsHecAmount] = useState(trimmedsHecBalance);
+    const [spapaAmount, setsPapaAmount] = useState(trimmedsPapaBalance);
     const [rewardYield, setRewardYield] = useState(trimmedStakingAPY);
     const [priceAtPurchase, setPriceAtPurchase] = useState(trimeMarketPrice);
     const [futureMarketPrice, setFutureMarketPrice] = useState(trimeMarketPrice);
@@ -32,16 +32,16 @@ function Calculator() {
     const [potentialReturn, setPotentialReturn] = useState("0");
 
     const calcInitialInvestment = () => {
-        const shec = Number(shecAmount) || 0;
+        const spapa = Number(spapaAmount) || 0;
         const price = parseFloat(priceAtPurchase) || 0;
-        const amount = shec * price;
+        const amount = spapa * price;
         return trim(amount, 2);
     };
 
     const calcCurrentWealth = () => {
-        const shec = Number(shecAmount) || 0;
+        const spapa = Number(spapaAmount) || 0;
         const price = parseFloat(trimeMarketPrice);
-        const amount = shec * price;
+        const amount = spapa * price;
         return trim(amount, 2);
     };
 
@@ -50,12 +50,12 @@ function Calculator() {
     useEffect(() => {
         const newInitialInvestment = calcInitialInvestment();
         setInitialInvestment(newInitialInvestment);
-    }, [shecAmount, priceAtPurchase]);
+    }, [spapaAmount, priceAtPurchase]);
 
     const calcNewBalance = () => {
         let value = parseFloat(rewardYield) / 100;
         value = Math.pow(value - 1, 1 / (365 * 3)) - 1 || 0;
-        let balance = Number(shecAmount);
+        let balance = Number(spapaAmount);
         for (let i = 0; i < days * 3; i++) {
             balance += balance * value;
         }
@@ -67,7 +67,7 @@ function Calculator() {
         setRewardsEstimation(trim(newBalance, 6));
         const newPotentialReturn = newBalance * (parseFloat(futureMarketPrice) || 0);
         setPotentialReturn(trim(newPotentialReturn, 2));
-    }, [days, rewardYield, futureMarketPrice, shecAmount]);
+    }, [days, rewardYield, futureMarketPrice, spapaAmount]);
 
     return (
         <div className="calculator-view">
@@ -100,7 +100,7 @@ function Calculator() {
                                     <Grid item xs={6} sm={4} md={4} lg={4}>
                                         <Box className="calculator-card-index">
                                             <Typography variant="h5" color="textSecondary">Your sPAPA Balance</Typography>
-                                            <Typography variant="h4">{isAppLoading ? <Skeleton width="100px" /> : <>{trimmedsHecBalance} sPAPA</>}</Typography>
+                                            <Typography variant="h4">{isAppLoading ? <Skeleton width="100px" /> : <>{trimmedsPapaBalance} sPAPA</>}</Typography>
                                         </Box>
                                     </Grid>
                                 </Grid>
@@ -118,12 +118,12 @@ function Calculator() {
                                                     type="number"
                                                     placeholder="Amount"
                                                     className="calculator-card-action-input"
-                                                    value={shecAmount}
-                                                    onChange={e => setsHecAmount(e.target.value)}
+                                                    value={spapaAmount}
+                                                    onChange={e => setsPapaAmount(e.target.value)}
                                                     labelWidth={0}
                                                     endAdornment={
                                                         <InputAdornment position="end">
-                                                            <div onClick={() => setsHecAmount(trimmedsHecBalance)} className="stake-card-action-input-btn">
+                                                            <div onClick={() => setsPapaAmount(trimmedsPapaBalance)} className="stake-card-action-input-btn">
                                                                 <Typography>Max</Typography>
                                                             </div>
                                                         </InputAdornment>

@@ -84,14 +84,14 @@ export const light = responsiveFontSizes(
             "&.papa-card": {
               backgroundColor: lightTheme.paperBg,
             },
-            "&.hec-modal": {
+            "&.papa-modal": {
               backgroundColor: lightTheme.modalBg,
             },
             "&.papa-menu": {
               backgroundColor: lightTheme.menuBg,
               backdropFilter: "blur(33px)",
             },
-            "&.hec-popover": {
+            "&.papa-popover": {
               backgroundColor: lightTheme.popoverBg,
               color: lightTheme.color,
               backdropFilter: "blur(15px)",

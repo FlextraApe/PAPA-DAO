@@ -23,7 +23,7 @@ function AdvancedSettings({
 }) {
   return (
     <Modal id="hades" open={open} onClose={handleClose} hideBackdrop>
-      <Paper className="papa-card hec-popover">
+      <Paper className="papa-card papa-popover">
         <Box display="flex">
           <IconButton onClick={handleClose}>
             <SvgIcon color="primary" component={XIcon} />

@@ -86,8 +86,8 @@ export const loadAccountDetails = createAsyncThunk(
         oldpapaUnstake: +oldunstakeAllowance,
       },
       wrapping: {
-        hecWrap: +wrapAllowance,
-        hecUnwrap: +unwrapAllowance,
+        papaWrap: +wrapAllowance,
+        papaUnwrap: +unwrapAllowance,
       },
       warmup: {
         depositAmount: ethers.utils.formatUnits(depositAmount, "gwei"),
@@ -181,8 +181,8 @@ interface IAccountSlice {
     wspapaAsSpapa: string;
   };
   wrapping: {
-    shecWrap: number;
-    wshecUnwrap: number;
+    spapaWrap: number;
+    wspapaUnwrap: number;
   };
   loading: boolean;
 }
@@ -190,7 +190,7 @@ const initialState: IAccountSlice = {
   loading: false,
   bonds: {},
   balances: { hec: "", shec: "", dai: "", oldshec: "", wshec: "", wspapaAsSpapa: "" },
-  wrapping: { shecWrap: 0, wshecUnwrap: 0 },
+  wrapping: { spapaWrap: 0, wspapaUnwrap: 0 },
 };
 
 const accountSlice = createSlice({

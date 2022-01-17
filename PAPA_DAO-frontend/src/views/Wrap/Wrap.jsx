@@ -54,25 +54,25 @@ function Wrap() {
     return state.app.currentIndex;
   });
 
-  const sHECPrice = useSelector(state => {
+  const sPAPAPrice = useSelector(state => {
     return state.app.marketPrice;
   });
 
-  const wsHECPrice = useSelector(state => {
+  const wsPAPAPrice = useSelector(state => {
     return state.app.marketPrice * state.app.currentIndex;
   });
 
-  const sHecBalance = useSelector(state => {
+  const sPapaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.shec;
   });
-  const wsHecBalance = useSelector(state => {
+  const wsPapaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.wspapa;
   });
   const wrapAllowance = useSelector(state => {
-    return state.account.wrapping && state.account.wrapping.hecWrap;
+    return state.account.wrapping && state.account.wrapping.papaWrap;
   });
   const unwrapAllowance = useSelector(state => {
-    return state.account.wrapping && state.account.wrapping.hecUnwrap;
+    return state.account.wrapping && state.account.wrapping.papaUnwrap;
   });
 
   const pendingTransactions = useSelector(state => {
@@ -81,9 +81,9 @@ function Wrap() {
 
   const setMax = () => {
     if (view === 0) {
-      setQuantity(sHecBalance);
+      setQuantity(sPapaBalance);
     } else {
-      setQuantity(wsHecBalance);
+      setQuantity(wsPapaBalance);
     }
   };
 
@@ -101,14 +101,14 @@ function Wrap() {
     // 1st catch if quantity > balance
     if (
       action === "wrap" &&
-      ethers.utils.parseUnits(quantity, "gwei").gt(ethers.utils.parseUnits(sHecBalance, "gwei"))
+      ethers.utils.parseUnits(quantity, "gwei").gt(ethers.utils.parseUnits(sPapaBalance, "gwei"))
     ) {
       return dispatch(error("You cannot wrap more than your sPAPA balance."));
     }
 
     if (
       action === "unwrap" &&
-      ethers.utils.parseUnits(quantity, "ether").gt(ethers.utils.parseUnits(wsHecBalance, "ether"))
+      ethers.utils.parseUnits(quantity, "ether").gt(ethers.utils.parseUnits(wsPapaBalance, "ether"))
     ) {
       return dispatch(error("You cannot unwrap more than your wsPAPA balance."));
     }
@@ -118,8 +118,8 @@ function Wrap() {
 
   const hasAllowance = useCallback(
     token => {
-      if (token === "sHEC") return wrapAllowance > 0;
-      if (token === "wsHEC") return wrapAllowance > 0;
+      if (token === "sPAPA") return wrapAllowance > 0;
+      if (token === "wsPAPA") return wrapAllowance > 0;
       return 0;
     },
     [wrapAllowance, unwrapAllowance],
@@ -128,7 +128,7 @@ function Wrap() {
   const isAllowanceDataLoading = (wrapAllowance == null && view === 0) || (unwrapAllowance == null && view === 1);
 
   const isUnwrap = view === 1;
-  const convertedQuantity = isUnwrap ? (quantity * wsHECPrice) / sHECPrice : (quantity * sHECPrice) / wsHECPrice;
+  const convertedQuantity = isUnwrap ? (quantity * wsPAPAPrice) / sPAPAPrice : (quantity * sPAPAPrice) / wsPAPAPrice;
 
   let modalButton = [];
 
@@ -150,16 +150,7 @@ function Wrap() {
             <Grid item>
               <div className="card-header">
                 <Typography variant="h5">Wrap / Unwrap</Typography>
-                {/* <Link
-                  className="migrate-sHEC-button"
-                  style={{ textDecoration: "none" }}
-                  href="https://docs.olympusdao.finance/main/contracts/tokens#wsHEC"
-                  aria-label="wsHec-wut"
-                  target="_blank"
-                > */}
                 <Typography>wsPAPA</Typography>
-                {/* <SvgIcon component={InfoIcon} color="primary" /> */}
-                {/* </Link> */}
               </div>
             </Grid>
 
@@ -167,12 +158,12 @@ function Wrap() {
               <div className="stake-top-metrics">
                 <Grid container spacing={2} alignItems="flex-end">
                   <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <div className="wrap-sHEC">
+                    <div className="wrap-sPAPA">
                       <Typography variant="h5" color="textSecondary">
                         sPAPA Price
                       </Typography>
                       <Typography variant="h4">
-                        {sHECPrice ? formatCurrency(sHECPrice, 2) : <Skeleton width="150px" />}
+                        {sPAPAPrice ? formatCurrency(sPAPAPrice, 2) : <Skeleton width="150px" />}
                       </Typography>
                     </div>
                   </Grid>
@@ -187,7 +178,7 @@ function Wrap() {
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <div className="wrap-wsHEC">
+                    <div className="wrap-wsPAPA">
                       <Typography variant="h5" color="textSecondary">
                         wsPAPA Price
                         <InfoTooltip
@@ -197,7 +188,7 @@ function Wrap() {
                         />
                       </Typography>
                       <Typography variant="h4">
-                        {wsHECPrice ? formatCurrency(wsHECPrice, 2) : <Skeleton width="150px" />}
+                        {wsPAPAPrice ? formatCurrency(wsPAPAPrice, 2) : <Skeleton width="150px" />}
                       </Typography>
                     </div>
                   </Grid>
@@ -231,7 +222,7 @@ function Wrap() {
                     </Tabs>
                     <Box className="stake-action-row " display="flex" alignItems="center" style={{ paddingBottom: 0 }}>
                       {address && !isAllowanceDataLoading ? (
-                        !hasAllowance("sHEC") && view === 0 ? (
+                        !hasAllowance("sPAPA") && view === 0 ? (
                           <Box className="help-text">
                             <Typography variant="body1" className="stake-note" color="textSecondary">
                               {view === 0 && (
@@ -244,7 +235,7 @@ function Wrap() {
                             </Typography>
                           </Box>
                         ) : (
-                          <FormControl className="HEC-input" variant="outlined" color="primary">
+                          <FormControl className="PAPA-input" variant="outlined" color="primary">
                             <InputLabel htmlFor="amount-input"></InputLabel>
                             <OutlinedInput
                               id="amount-input"
@@ -269,7 +260,7 @@ function Wrap() {
                       )}
 
                       <TabPanel value={view} index={0} className="stake-tab-panel">
-                        {address && hasAllowance("sHEC") ? (
+                        {address && hasAllowance("sPAPA") ? (
                           <Button
                             className="stake-button"
                             variant="contained"
@@ -326,13 +317,13 @@ function Wrap() {
                     <div className="data-row">
                       <Typography variant="body1">Wrappable Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(sHecBalance, 4)} sPAPA</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(sPapaBalance, 4)} sPAPA</>}
                       </Typography>
                     </div>
                     <div className="data-row">
                       <Typography variant="body1">Unwrappable Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(wsHecBalance, 4)} wsPAPA</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(wsPapaBalance, 4)} wsPAPA</>}
                       </Typography>
                     </div>
                   </div>

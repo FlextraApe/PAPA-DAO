@@ -53,13 +53,13 @@ function Stake() {
   const oldfiveDayRate = useSelector(state => {
     return state.app.old_fiveDayRate;
   });
-  const hecBalance = useSelector(state => {
+  const papaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.hec;
   });
-  const shecBalance = useSelector(state => {
+  const spapaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.shec;
   });
-  const oldshecBalance = useSelector(state => {
+  const oldspapaBalance = useSelector(state => {
     return state.account.balances && state.account.balances.oldshec;
   });
   const stakeAllowance = useSelector(state => {
@@ -102,13 +102,13 @@ function Stake() {
 
   const setMax = () => {
     if (view === 0) {
-      setQuantity(hecBalance);
+      setQuantity(papaBalance);
     } else {
-      setQuantity(shecBalance);
+      setQuantity(spapaBalance);
     }
   };
   const setOldMax = () => {
-    setOldQuantity(oldshecBalance);
+    setOldQuantity(oldspapaBalance);
   };
 
   const onSeekApproval = async token => {
@@ -120,10 +120,10 @@ function Stake() {
     let value, unstakedVal;
     if (isOld) {
       value = oldquantity;
-      unstakedVal = oldshecBalance;
+      unstakedVal = oldspapaBalance;
     } else {
       value = quantity;
-      unstakedVal = shecBalance;
+      unstakedVal = spapaBalance;
     }
     if (isNaN(value) || value === 0 || value === "") {
       // eslint-disable-next-line no-alert
@@ -132,7 +132,7 @@ function Stake() {
 
     // 1st catch if quantity > balance
     let gweiValue = ethers.utils.parseUnits(value, "gwei");
-    if (action === "stake" && gweiValue.gt(ethers.utils.parseUnits(hecBalance, "gwei"))) {
+    if (action === "stake" && gweiValue.gt(ethers.utils.parseUnits(papaBalance, "gwei"))) {
       return dispatch(error("You cannot stake more than your PAPA balance."));
     }
 
@@ -185,14 +185,14 @@ function Stake() {
   };
 
   const trimmedBalance = Number(
-    [shecBalance]
+    [spapaBalance]
       .filter(Boolean)
       .map(balance => Number(balance))
       .reduce((a, b) => a + b, 0)
       .toFixed(4),
   );
   const oldtrimmedBalance = Number(
-    [oldshecBalance]
+    [oldspapaBalance]
       .filter(Boolean)
       .map(balance => Number(balance))
       .reduce((a, b) => a + b, 0)
@@ -339,7 +339,7 @@ function Stake() {
                                 </Typography>
                               </Box>
                             ) : (
-                              <FormControl className="hec-input" variant="outlined" color="primary">
+                              <FormControl className="papa-input" variant="outlined" color="primary">
                                 <InputLabel htmlFor="amount-input"></InputLabel>
                                 <OutlinedInput
                                   id="amount-input"
@@ -428,7 +428,7 @@ function Stake() {
                         <div className="data-row">
                           <Typography variant="body1">Your Balance</Typography>
                           <Typography variant="body1">
-                            {isAppLoading ? <Skeleton width="80px" /> : <>{trim(hecBalance, 4)} PAPA</>}
+                            {isAppLoading ? <Skeleton width="80px" /> : <>{trim(papaBalance, 4)} PAPA</>}
                           </Typography>
                         </div> 
 
@@ -467,7 +467,7 @@ function Stake() {
             </Paper>
           </Zoom>
         </div>
-        {address && oldshecBalance > 0.0001 && (
+        {address && oldspapaBalance > 0.0001 && (
           <div id="stake-view">
             <Zoom in={true} onEntered={() => setZoomed(true)}>
               <Paper className={`papa-card`}>
@@ -495,7 +495,7 @@ function Stake() {
                           </Typography>
                           <Box className="stake-action-row " display="flex" alignItems="center">
                             {address && !isAllowanceDataLoading ? (
-                              !hasAllowance("oldshec") ? (
+                              !hasAllowance("oldspapa") ? (
                                 <Box className="help-text">
                                   <Typography variant="body1" className="stake-note" color="textSecondary">
                                     <>
@@ -506,7 +506,7 @@ function Stake() {
                                   </Typography>
                                 </Box>
                               ) : (
-                                <FormControl className="hec-input" variant="outlined" color="primary">
+                                <FormControl className="papa-input" variant="outlined" color="primary">
                                   <InputLabel htmlFor="amount-input"></InputLabel>
                                   <OutlinedInput
                                     id="amount-old-input"
@@ -533,7 +533,7 @@ function Stake() {
                             <TabPanel value={view1} index={0} className="stake-tab-panel">
                               {isAllowanceDataLoading ? (
                                 <Skeleton />
-                              ) : address && hasAllowance("oldshec") ? (
+                              ) : address && hasAllowance("oldspapa") ? (
                                 <Button
                                   className="stake-button"
                                   variant="contained"
@@ -552,7 +552,7 @@ function Stake() {
                                   color="primary"
                                   disabled={isPendingTxn(pendingTransactions, "approve_unstaking")}
                                   onClick={() => {
-                                    onSeekApproval("oldshec");
+                                    onSeekApproval("oldspapa");
                                   }}
                                 >
                                   {txnButtonText(pendingTransactions, "approve_unstaking", "Approve")}

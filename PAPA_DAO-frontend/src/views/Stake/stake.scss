@@ -51,7 +51,7 @@
   }
 }
 
-.migrate-shec-button {
+.migrate-spapa-button {
   position: absolute;
   right: 20px;
   top: 20px;
@@ -66,7 +66,7 @@
   }
 }
 
-.migrate-shec-button.complete {
+.migrate-spapa-button.complete {
   color: #35ee66 !important;
 }
 
@@ -103,7 +103,7 @@
   }
 }
 
-.hec-logo-tiny {
+.papa-logo-tiny {
   height: 14px;
   width: 14px;
   vertical-align: middle;
@@ -158,7 +158,7 @@
   }
 }
 
-.hec-input {
+.papa-input {
   max-width: 542px;
   width: 100%;
   margin: 5px !important;
@@ -216,7 +216,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    .hec-pairs p {
+    .papa-pairs p {
       margin-bottom: 0 !important;
     }
   }

@@ -89,7 +89,7 @@ function ChooseBond() {
                 </Box>
               </Grid>
 
-              <Grid item xs={6} className={`hec-price`}>
+              <Grid item xs={6} className={`papa-price`}>
                 <Box textAlign={`${isVerySmallScreen ? "right" : "center"}`}>
                   <Typography variant="h5" color="textSecondary">
                     PAPA Price

@@ -26,7 +26,7 @@ function alreadyApprovedToken(token: string, wrapAllowance: BigNumber, unwrapAll
   // determine which allowance to check
   if (token === "spapa") {
     applicableAllowance = wrapAllowance;
-  } else if (token === "wshec") {
+  } else if (token === "wspapa") {
     applicableAllowance = unwrapAllowance;
   }
 
@@ -45,11 +45,11 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const shecContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20ABI, signer);
-    const wshecContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, signer);
+    const spapaContract = new ethers.Contract(addresses[networkID].SPAPA_ADDRESS as string, ierc20ABI, signer);
+    const wspapaContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, signer);
     let approveTx;
-    let wrapAllowance = await shecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
-    let unwrapAllowance = await wshecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    let wrapAllowance = await spapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    let unwrapAllowance = await wspapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
 
     // return early if approval has already happened
     if (alreadyApprovedToken(token, wrapAllowance, unwrapAllowance)) {
@@ -57,8 +57,8 @@ export const changeApproval = createAsyncThunk(
       return dispatch(
         fetchAccountSuccess({
           wrapping: {
-            hecWrap: +wrapAllowance,
-            hecUnwrap: +unwrapAllowance,
+            papaWrap: +wrapAllowance,
+            papaUnwrap: +unwrapAllowance,
           },
         }),
       );
@@ -67,12 +67,12 @@ export const changeApproval = createAsyncThunk(
     try {
       if (token === "spapa") {
         // won't run if wrapAllowance > 0
-        approveTx = await shecContract.approve(
+        approveTx = await spapaContract.approve(
           addresses[networkID].WSPAPA_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
-      } else if (token === "wshec") {
-        approveTx = await wshecContract.approve(
+      } else if (token === "wspapa") {
+        approveTx = await wspapaContract.approve(
           addresses[networkID].WSPAPA_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
@@ -96,14 +96,14 @@ export const changeApproval = createAsyncThunk(
 
     await sleep(2);
     // go get fresh allowances
-    wrapAllowance = await shecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
-    unwrapAllowance = await wshecContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    wrapAllowance = await spapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
+    unwrapAllowance = await wspapaContract.allowance(address, addresses[networkID].WSPAPA_ADDRESS);
 
     return dispatch(
       fetchAccountSuccess({
         wrapping: {
-          hecWrap: +wrapAllowance,
-          hecUnwrap: +unwrapAllowance,
+          papaWrap: +wrapAllowance,
+          papaUnwrap: +unwrapAllowance,
         },
       }),
     );
@@ -119,7 +119,7 @@ export const changeWrap = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const wshecContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, signer);
+    const wspapaContract = new ethers.Contract(addresses[networkID].WSPAPA_ADDRESS as string, wsPAPA, signer);
 
     let wrapTx;
     let uaData: IUAData = {
@@ -132,10 +132,10 @@ export const changeWrap = createAsyncThunk(
     try {
       if (action === "wrap") {
         uaData.type = "wrap";
-        wrapTx = await wshecContract.wrap(ethers.utils.parseUnits(value, "gwei"));
+        wrapTx = await wspapaContract.wrap(ethers.utils.parseUnits(value, "gwei"));
       } else {
         uaData.type = "unwrap";
-        wrapTx = await wshecContract.unwrap(ethers.utils.parseUnits(value));
+        wrapTx = await wspapaContract.unwrap(ethers.utils.parseUnits(value));
       }
       const pendingTxnType = action === "wrap" ? "wrapping" : "unwrapping";
       uaData.txHash = wrapTx.hash;

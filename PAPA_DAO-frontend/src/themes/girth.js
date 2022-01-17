@@ -66,7 +66,7 @@ export const girth = responsiveFontSizes(
           },
         },
         MuiPaper: {
-          "&.hec-modal": {
+          "&.papa-modal": {
             backgroundColor: girthTheme.modalBg,
           },
         },
