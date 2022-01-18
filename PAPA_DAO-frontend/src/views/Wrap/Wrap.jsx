@@ -263,7 +263,7 @@ function Wrap() {
                         {address && hasAllowance("sPAPA") ? (
                           <Button
                             className="stake-button"
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             disabled={isPendingTxn(pendingTransactions, "wrapping")}
                             onClick={() => {
