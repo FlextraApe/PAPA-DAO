@@ -275,7 +275,7 @@ function Wrap() {
                         ) : (
                           <Button
                             className="stake-button"
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             disabled={isPendingTxn(pendingTransactions, "approve_wrapping")}
                             onClick={() => {
@@ -290,7 +290,7 @@ function Wrap() {
                       <TabPanel value={view} index={1} className="stake-tab-panel">
                         <Button
                           className="stake-button"
-                          variant="contained"
+                          variant="outlined"
                           color="primary"
                           disabled={isPendingTxn(pendingTransactions, "unwrapping")}
                           onClick={() => {
