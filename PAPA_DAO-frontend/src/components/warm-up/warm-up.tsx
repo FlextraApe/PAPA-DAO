@@ -71,7 +71,7 @@ export default function WarmUp({
           <div className={"claim-forfeit"}>
             {warmupRebaseTime >= 1 ? (
               <>
-                <Button
+                {/* <Button
                   className="exit-button claim-disable"
                   variant="outlined"
                   color="primary"
@@ -79,7 +79,7 @@ export default function WarmUp({
                   onClick={onClaim}
                 >
                   {txnButtonText(pendingTransactions, "claiming", "Claim")}
-                </Button>
+                </Button> */}
                 <Button
                   className="exit-button"
                   variant="outlined"
