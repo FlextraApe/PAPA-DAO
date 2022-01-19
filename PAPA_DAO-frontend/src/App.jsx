@@ -10,19 +10,16 @@ import useBonds from "./hooks/Bonds";
 import { useAddress, useWeb3Context } from "./hooks/web3Context";
 import { storeQueryParameters } from "./helpers/QueryParameterHelper";
 import { shouldTriggerSafetyCheck } from "./helpers";
-
 import { calcBondDetails } from "./slices/BondSlice";
 import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 import { info } from "./slices/MessagesSlice";
-
 import { Stake, ChooseBond, Bond, TreasuryDashboard } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
 import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
-
 import { dark as darkTheme } from "./themes/dark.js";
 import { light as lightTheme } from "./themes/light.js";
 import { girth as gTheme } from "./themes/girth.js";
