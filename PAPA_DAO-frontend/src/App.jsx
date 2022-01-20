@@ -74,10 +74,8 @@ function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isSmallerScreen = useMediaQuery("(max-width: 980px)");
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
-
   const { connect, hasCachedProvider, provider, chainID, connected, uri } = useWeb3Context();
   const address = useAddress();
-
   const [walletChecked, setWalletChecked] = useState(false);
 
   // const isAppLoading = useSelector(state => state.app.loading);
