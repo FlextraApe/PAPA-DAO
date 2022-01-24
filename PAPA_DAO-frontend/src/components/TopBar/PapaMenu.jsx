@@ -6,7 +6,6 @@ import { ReactComponent as ArrowUpIcon } from "../../assets/icons/arrow-up.svg";
 import { ReactComponent as spapaTokenImg } from "../../assets/tokens/SPAPA.svg";
 import { ReactComponent as papaTokenImg } from "../../assets/tokens/PAPA.svg";
 import { ReactComponent as wspapaTokenImg } from "../../assets/tokens/WSPAPA.svg";
-
 import "./papamenu.scss";
 import { useWeb3Context } from "../../hooks/web3Context";
 
