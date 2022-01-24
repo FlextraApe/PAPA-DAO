@@ -8,7 +8,6 @@ import { ReactComponent as papaTokenImg } from "../../assets/tokens/PAPA.svg";
 import { ReactComponent as wspapaTokenImg } from "../../assets/tokens/WSPAPA.svg";
 import "./papamenu.scss";
 import { useWeb3Context } from "../../hooks/web3Context";
-
 import PAPAImg from "src/assets/tokens/PAPA.png";
 import sPAPAImg from "src/assets/tokens/SPAPA.png";
 import wsPAPAImg from "src/assets/tokens/WSPAPA.png";
