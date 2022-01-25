@@ -146,15 +146,23 @@ library SafeERC20 {
 }
 
 interface IBond {
-    function pushManagement( address newOwner_ ) public virtual override onlyPolicy();
-    function pullManagement() public virtual override;
-    function bondPriceInUSD() public view returns ( uint price_ );
+    function pushManagement( address newOwner_ );
+    function pullManagement();
+    function bondPriceInUSD();
+    function initializeBondTerms( 
+        uint _controlVariable, 
+        uint _vestingTerm,
+        uint _minimumPrice,
+        uint _maxPayout,
+        uint _fee,
+        uint _maxDebt,
+        uint _initialDebt
+    );
 }
 
 contract BondPriceController is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;
-    
-    address[] public bondDepositories;
 
+    address[] public bondDepositories;
 }
