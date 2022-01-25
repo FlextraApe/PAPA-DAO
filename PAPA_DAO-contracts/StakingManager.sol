@@ -299,7 +299,6 @@ library SafeERC20 {
     }
 }
 
-
 interface ISPAPA {
     function gonsForBalance( uint amount ) external view returns ( uint );
     function balanceForGons( uint gons ) external view returns ( uint );
