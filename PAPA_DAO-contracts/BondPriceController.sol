@@ -42,6 +42,8 @@ contract Ownable is IOwnable {
 }
 
 interface IBond {
+    function pushManagement( address newOwner_ ) public virtual override onlyPolicy();
+    function pullManagement() public virtual override;
     function bondPriceInUSD() public view returns ( uint price_ );
 }
 
