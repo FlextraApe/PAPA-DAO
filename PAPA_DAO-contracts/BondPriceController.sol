@@ -179,4 +179,37 @@ contract BondPriceController is Ownable {
     using SafeMath for uint;
 
     address[] public bondDepositories;
+    
+    function addBondDepository(address _depository) external onlyOwner() {
+        require(_depository != address(0));
+
+        for(uint i=0;i<bondDepositories.length;i++) {
+            if(bondDepositories[i] == _depository) {
+                return;
+            }
+        }
+        
+        proxies.push(_depository);
+    }
+    
+    function removeBondDepository(address _depository) external onlyOwner() returns (bool) {
+        require(_depository != address(0));
+       
+        for(uint i=0;i<bondDepositories.length;i++) {
+            if(bondDepositories[i] == _depository) {
+                for(uint j=i;j<bondDepositories.length-1;j++) {
+                    bondDepositories[j] = bondDepositories[j+1];
+                }
+
+                bondDepositories.pop();
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    function getInitialDebt(address _depository) external onlyOwner() {
+        
+    }
 }
