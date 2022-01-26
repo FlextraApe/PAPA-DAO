@@ -149,12 +149,26 @@ interface IBond {
     function pushManagement( address newOwner_ );
     function pullManagement();
     function bondPriceInUSD();
+}
+
+interface IStableBondInitialize {
     function initializeBondTerms( 
         uint _controlVariable, 
         uint _vestingTerm,
         uint _minimumPrice,
         uint _maxPayout,
         uint _fee,
+        uint _maxDebt,
+        uint _initialDebt
+    );
+}
+
+interface IAvaxBondInitialize {
+   function initializeBondTerms( 
+        uint _controlVariable, 
+        uint _vestingTerm,
+        uint _minimumPrice,
+        uint _maxPayout,
         uint _maxDebt,
         uint _initialDebt
     );
