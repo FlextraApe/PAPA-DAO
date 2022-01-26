@@ -149,6 +149,7 @@ interface IBond {
     function pushManagement( address newOwner_ );
     function pullManagement();
     function bondPriceInUSD();
+    function totalDebt();
 }
 
 interface IStableBondInitialize {
@@ -192,7 +193,7 @@ contract BondPriceController is Ownable {
         proxies.push(_depository);
     }
     
-    function removeBondDepository(address _depository) external onlyOwner() returns (bool) {
+    function removeBondDepository(address _depository) external onlyOwner() returns ( bool ) {
         require(_depository != address(0));
        
         for(uint i=0;i<bondDepositories.length;i++) {
@@ -209,7 +210,15 @@ contract BondPriceController is Ownable {
         return false;
     }
 
-    function getInitialDebt(address _depository) external onlyOwner() {
-        
+    function getInitialDebt(address _depository) external onlyOwner() returns( uint ) {
+        bool existBondAddress = false;
+        for(uint i=0;i<bondDepositories.length;i++) {
+            if(bondDepositories[i] == _depository) {
+                existBondAddress = true;
+            }
+        }
+
+        require(existBondAddress, "Not BondDepository");
+        return IBond(_depository).totalDebt();
     }
 }
