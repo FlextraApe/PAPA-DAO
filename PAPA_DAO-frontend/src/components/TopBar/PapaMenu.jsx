@@ -87,7 +87,7 @@ function PapaMenu() {
               <Paper className="papa-menu" elevation={1}>
                 <Box component="div" className="buy-tokens">
                   <Link
-                    href={`https://traderjoexyz.com/#/trade?inputCurrency=&outputCurrency=${PAPA_ADDRESS}`}
+                    href={`https://traderjoexyz.com/trade?inputCurrency=0x130966628846BFd36ff31a822705796e8cb8C18D&outputCurrency=0x70b33ebC5544C12691d055b49762D0F8365d99Fe#/`}
                     target="_blank"
                     rel="noreferrer"
                   >
