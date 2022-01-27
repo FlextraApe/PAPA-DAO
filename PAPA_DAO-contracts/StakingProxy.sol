@@ -1,44 +1,54 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.7.5;
+pragma solidity ^0.7.5;
 
 interface IOwnable {
-  function owner() external view returns (address);
+    function policy() external view returns (address);
 
-  function renounceOwnership() external;
-  
-  function transferOwnership( address newOwner_ ) external;
+    function renounceManagement() external;
+
+    function pushManagement( address newOwner_ ) external;
+
+    function pullManagement() external;
 }
 
 contract Ownable is IOwnable {
-    
-  address internal _owner;
 
-  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    address internal _owner;
+    address internal _newOwner;
 
-  constructor () {
-    _owner = msg.sender;
-    emit OwnershipTransferred( address(0), _owner );
-  }
+    event OwnershipPushed(address indexed previousOwner, address indexed newOwner);
+    event OwnershipPulled(address indexed previousOwner, address indexed newOwner);
 
-  function owner() public view override returns (address) {
-    return _owner;
-  }
+    constructor () {
+        _owner = msg.sender;
+        emit OwnershipPushed( address(0), _owner );
+    }
 
-  modifier onlyOwner() {
-    require( _owner == msg.sender, "Ownable: caller is not the owner" );
-    _;
-  }
+    function policy() public view override returns (address) {
+        return _owner;
+    }
 
-  function renounceOwnership() public virtual override onlyOwner() {
-    emit OwnershipTransferred( _owner, address(0) );
-    _owner = address(0);
-  }
+    modifier onlyPolicy() {
+        require( _owner == msg.sender, "Ownable: caller is not the owner" );
+        _;
+    }
 
-  function transferOwnership( address newOwner_ ) public virtual override onlyOwner() {
-    require( newOwner_ != address(0), "Ownable: new owner is the zero address");
-    emit OwnershipTransferred( _owner, newOwner_ );
-    _owner = newOwner_;
-  }
+    function renounceManagement() public virtual override onlyPolicy() {
+        emit OwnershipPushed( _owner, address(0) );
+        _owner = address(0);
+    }
+
+    function pushManagement( address newOwner_ ) public virtual override onlyPolicy() {
+        require( newOwner_ != address(0), "Ownable: new owner is the zero address");
+        emit OwnershipPushed( _owner, newOwner_ );
+        _newOwner = newOwner_;
+    }
+
+    function pullManagement() public virtual override {
+        require( msg.sender == _newOwner, "Ownable: must be new owner to pull");
+        emit OwnershipPulled( _owner, _newOwner );
+        _owner = _newOwner;
+    }
 }
 
 library SafeMath {
@@ -124,7 +134,7 @@ library Address {
     }
 
     function functionCall(address target, bytes memory data) internal returns (bytes memory) {
-      return functionCall(target, data, "Address: low-level call failed");
+        return functionCall(target, data, "Address: low-level call failed");
     }
 
     function functionCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {
@@ -285,96 +295,91 @@ library SafeERC20 {
     }
 }
 
-interface IBond {
-    function pushManagement( address newOwner_ ) external;
-    function pullManagement() external;
-    function bondPriceInUSD() external view;
-    function totalDebt() external view returns (uint256);
-    function principle() external;
-    function isLiquidityBond() external view returns (bool);
+interface IStaking {
+    function stake( uint _amount, address _recipient ) external returns ( bool );
+    function claim( address _recipient ) external;
+    function epoch() external view returns (
+        uint length,
+        uint number,
+        uint endBlock,
+        uint distribute);
 }
 
-interface IStableBondInitialize {
-    function initializeBondTerms( 
-        uint _controlVariable, 
-        uint _vestingTerm,
-        uint _minimumPrice,
-        uint _maxPayout,
-        uint _fee,
-        uint _maxDebt,
-        uint _initialDebt
-    ) external;
+interface IsPAPA {
+    function gonsForBalance( uint amount ) external view returns ( uint );
+    function balanceForGons( uint gons ) external view returns ( uint );
 }
 
-interface IUnstableBondInitialize {
-   function initializeBondTerms( 
-        uint _controlVariable, 
-        uint _vestingTerm,
-        uint _minimumPrice,
-        uint _maxPayout,
-        uint _maxDebt,
-        uint _initialDebt
-    ) external;
+interface IStakingManager{
+    function warmupPeriod() external view returns (uint);
 }
 
-contract BondPriceController is Ownable {
+contract StakingProxy is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;
 
-    address[] public stableBondDepositories;
-    address[] public unStableBondDepositories;
+    address public immutable PAPA;
+    address public immutable sPAPA;
+    address public immutable manager;
+    address public immutable staking;
+    uint public lastStakedEpoch;
 
-    function addBondDepository(address _depository, bool _isStableBond) external onlyOwner() {
-        require(_depository != address(0));
-        if (_isStableBond){
-            for(uint i=0;i<stableBondDepositories.length;i++) {
-                if(stableBondDepositories[i] == _depository) {
-                    return;
-                }
-            }
-           stableBondDepositories.push(_depository); 
-        }
-        else {
-                for(uint i=0;i<unStableBondDepositories.length;i++) {
-                    if(unStableBondDepositories[i] == _depository) {
-                        return;
-                }
-            }
-           unStableBondDepositories.push(_depository); 
-        }
+    struct Claim {
+        uint deposit;
+        uint gons;
+        uint expiry;
+    }
+    mapping(address => Claim) public claims;
+    
+    constructor(
+        address _papa, // PAPA Token contract address
+        address _spapa, // sPAPA Token contract address
+        address _manager, // Staking Manager contract address 
+        address _staking
+    ) {
+        require(_papa != address(0));
+        require(_spapa != address(0));
+        require(_manager != address(0));
+        require(_staking != address(0));
+
+        PAPA = _papa;
+        sPAPA = _spapa;
+        manager = _manager;
+        staking = _staking;
     }
     
-    function removeBondDepository(address _depository) external onlyOwner() returns ( bool ) {
-        require(_depository != address(0));
+    function stake(uint _amount, address _recipient) external returns (bool) {
+        require(msg.sender == manager); // only allow calls from the StakingManager
+        require(_recipient != address(0));
+        require(_amount != 0); // why would anyone need to stake 0 PAPA?
+        lastStakedEpoch=getStakingEpoch();
+        Claim memory claimInfo = claims[_recipient];
+        claims[_recipient] = Claim({
+            deposit: claimInfo.deposit.add(_amount),
+            gons: claimInfo.gons.add(IsPAPA(sPAPA).gonsForBalance(_amount)),
+            expiry: lastStakedEpoch.add( IStakingManager(staking).warmupPeriod() )
+        });
+
+        IERC20(PAPA).approve(staking, _amount);
+        return IStaking(staking).stake(_amount, address(this));
+    }
+    
+    function claim(address _recipient) external {
+        require(msg.sender == manager); // only allow calls from the StakingManager
+        require(_recipient != address(0));
+
+        if(getStakingEpoch()>=lastStakedEpoch+IStakingManager(staking).warmupPeriod()){
+            IStaking(staking).claim(address(this));
+        }
+        Claim memory claimInfo = claims[ _recipient ];
+        if(claimInfo.gons == 0||claimInfo.expiry>getStakingEpoch()) {
+            return;
+        }
         
-        for(uint i=0;i<stableBondDepositories.length;i++) {
-            if(stableBondDepositories[i] == _depository) {
-                for(uint j=i;j<stableBondDepositories.length-1;j++) {
-                    stableBondDepositories[j] = stableBondDepositories[j+1];
-                }
-                stableBondDepositories.pop();
-                return true;
-            }
-        }
-
-        for(uint i=0;i<unStableBondDepositories.length;i++) {
-            if(unStableBondDepositories[i] == _depository) {
-                for(uint j=i;j<unStableBondDepositories.length-1;j++) {
-                    unStableBondDepositories[j] = unStableBondDepositories[j+1];
-                }
-                unStableBondDepositories.pop();
-                return true;
-            }      
-        }
-        return false;
+        delete claims[_recipient];
+        IERC20(sPAPA).transfer(_recipient, IsPAPA(sPAPA).balanceForGons(claimInfo.gons));
     }
-
-    function getInitialDebt(address _depository) view public returns(uint){
-        return IBond(_depository).totalDebt();
+    function getStakingEpoch() view public returns(uint stakingEpoch){
+        (,stakingEpoch,,)=IStaking(staking).epoch();
     }
-
-    function getControllVariable(address _depository) view public returns(bool){
-        return IBond(_depository).isLiquidityBond();
-    }
-
 }

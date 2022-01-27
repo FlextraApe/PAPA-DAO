@@ -289,9 +289,9 @@ interface IBond {
     function pushManagement( address newOwner_ ) external;
     function pullManagement() external;
     function bondPriceInUSD() external view;
-    function totalDebt() external;
+    function totalDebt() external view returns (uint256);
     function principle() external;
-    function isLiquidityBond() external;
+    function isLiquidityBond() external view returns (bool);
 }
 
 interface IStableBondInitialize {
@@ -324,8 +324,6 @@ contract BondPriceController is Ownable {
     address[] public stableBondDepositories;
     address[] public unStableBondDepositories;
 
-    uint initialbond;
-    
     function addBondDepository(address _depository, bool _isStableBond) external onlyOwner() {
         require(_depository != address(0));
         if (_isStableBond){
@@ -371,12 +369,12 @@ contract BondPriceController is Ownable {
         return false;
     }
 
-    function getInitialDebt(address _depository) public {
+    function getInitialDebt(address _depository) view public returns(uint){
         return IBond(_depository).totalDebt();
     }
 
-    function getControllVariable(address _depository) public {
+    function getControllVariable(address _depository) view public returns(bool){
         return IBond(_depository).isLiquidityBond();
-
     }
+
 }
