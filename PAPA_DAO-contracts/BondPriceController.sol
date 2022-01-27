@@ -323,6 +323,8 @@ contract BondPriceController is Ownable {
 
     address[] public stableBondDepositories;
     address[] public unStableBondDepositories;
+    address private avaxBond = 0x63933d4e91C84baE6577744fd75c4f4f2C44d901;
+    address private papaAvaxBon = 0x6045dd16eE5CBE4a0D09FD28AbBc68DCD71f2bf6;
 
     function addBondDepository(address _depository, bool _isStableBond) external onlyOwner() {
         require(_depository != address(0));
@@ -374,6 +376,7 @@ contract BondPriceController is Ownable {
     }
 
     function getControllVariable(address _depository) view public returns(bool){
+        
         return IBond(_depository).isLiquidityBond();
     }
 
