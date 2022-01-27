@@ -164,7 +164,7 @@ interface IStableBondInitialize {
     );
 }
 
-interface IAvaxBondInitialize {
+interface IUnstableBondInitialize {
    function initializeBondTerms( 
         uint _controlVariable, 
         uint _vestingTerm,
@@ -179,23 +179,32 @@ contract BondPriceController is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;
 
-    address[] public bondDepositories;
+    address[] public stableBondDepositories;
+    address[] public unStableBondDepositories;
     
-    function addBondDepository(address _depository) external onlyOwner() {
+    function addBondDepository(address _depository, bool _isStableBond) external onlyOwner() {
         require(_depository != address(0));
-
-        for(uint i=0;i<bondDepositories.length;i++) {
-            if(bondDepositories[i] == _depository) {
-                return;
+        if (_isStableBond){
+            for(uint i=0;i<stableBondDepositories.length;i++) {
+                if(stableBondDepositories[i] == _depository) {
+                    return;
+                }
             }
+           stableBondDepositories.push(_depository); 
         }
-        
-        proxies.push(_depository);
+        else {
+                for(uint i=0;i<unStableBondDepositories.length;i++) {
+                    if(unStableBondDepositories[i] == _depository) {
+                        return;
+                }
+            }
+           unStableBondDepositories.push(_depository); 
+        }
     }
     
     function removeBondDepository(address _depository) external onlyOwner() returns ( bool ) {
         require(_depository != address(0));
-       
+        
         for(uint i=0;i<bondDepositories.length;i++) {
             if(bondDepositories[i] == _depository) {
                 for(uint j=i;j<bondDepositories.length-1;j++) {
@@ -210,7 +219,7 @@ contract BondPriceController is Ownable {
         return false;
     }
 
-    function getInitialDebt(address _depository) external onlyOwner() returns( uint ) {
+    function getInitialDebt(address _depository) external returns( uint ) {
         bool existBondAddress = false;
         for(uint i=0;i<bondDepositories.length;i++) {
             if(bondDepositories[i] == _depository) {
@@ -220,5 +229,16 @@ contract BondPriceController is Ownable {
 
         require(existBondAddress, "Not BondDepository");
         return IBond(_depository).totalDebt();
+    }
+
+    function getControllVariable(address _depository) external returns( uint ) {
+        bool existBondAddress = false;
+        for(uint i=0;i<bondDepositories.length;i++) {
+            if(bondDepositories[i] == _depository) {
+                existBondAddress = true;
+            }
+        }
+        require(existBondAddress, "Not BondDepository");
+
     }
 }
