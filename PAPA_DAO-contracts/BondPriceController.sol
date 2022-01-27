@@ -372,9 +372,8 @@ contract BondPriceController is Ownable {
         return IBond(_depository).totalDebt();
     }
 
-    function getControllVariable(address _depository, uint _targetPrice) external returns( uint ) {
+    function getControllVariable(address _depository, uint _targetPrice) public {
         
 
     }
-
 }
