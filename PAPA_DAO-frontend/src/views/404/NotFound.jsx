@@ -8,7 +8,6 @@ export default function NotFound() {
         <a href="https://app.papadao.co" target="_blank">
           <img className="branding-header-icon" src={PapaIcon} alt="PapaDAO" />
         </a>
-
         <h2 style={{ textAlign: "center" }}>Page not found</h2>
       </div>
     </div>

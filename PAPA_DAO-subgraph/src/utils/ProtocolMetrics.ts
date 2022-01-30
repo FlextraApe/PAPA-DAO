@@ -85,15 +85,15 @@ function getCriculatingSupply(blockNumber: BigInt, total_supply: BigDecimal): Bi
 
 function getSpapaSupply(blockNumber: BigInt): BigDecimal {
     let spapa_contract_v1 = sPapaERC20.bind(Address.fromString(SPAPA_ERC20_CONTRACT_V1))
-    let spapac_supply = toDecimal(spapa_contract_v1.circulatingSupply(), 9)
+    let spapa_supply = toDecimal(spapa_contract_v1.circulatingSupply(), 9)
 
     if (blockNumber.gt(BigInt.fromString(SPAPA_ERC20_CONTRACT_V2_BLOCK))) {
         let spapa_contract_v2 = sPapaERC20.bind(Address.fromString(SPAPA_ERC20_CONTRACT_V2))
-        spapac_supply = spapac_supply.plus(toDecimal(spapa_contract_v2.circulatingSupply(), 9))
+        spapa_supply = spapa_supply.plus(toDecimal(spapa_contract_v2.circulatingSupply(), 9))
     }
 
-    log.debug("sPAPA Supply {}", [spapac_supply.toString()])
-    return spapac_supply
+    log.debug("sPAPA Supply {}", [spapa_supply.toString()])
+    return spapa_supply
 }
 
 function getPAPAMIMReserves(pair: UniswapV2Pair): BigDecimal[] {
