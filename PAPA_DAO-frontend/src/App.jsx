@@ -30,7 +30,6 @@ import Calculator from "./views/Calculator/index";
 
 const drawerWidth = 280;
 const transitionDuration = 969;
-
 const useStyles = makeStyles(theme => ({
   drawer: {
     [theme.breakpoints.up("md")]: {
